@@ -8,6 +8,6 @@ router.get("/:id", doctorsController.show);
 
 router.post("/:id/review", doctorsController.storeReview);
 
-router.post("/", doctorsController.storeDoctors);
+router.post("/", doctorsController.storeDoctor);
 
 module.exports = router;

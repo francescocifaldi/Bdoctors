@@ -27,8 +27,13 @@ function show(req, res) {
 function storeReview(req, res) {
   const dataObj = req.body;
   const doctor_id = req.params.id;
-
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   console.log(dataObj, doctor_id);
+
+  if (!first_name || !last_name || !email || first_name.length < 3 || last_name.length < 3 || !emailRegex.test(email)) {
+    return res.status(400).json({ message: "Dati invalidi" });
+  }
+
   const sql = `INSERT INTO reviews (review, vote, doctor_id, first_name, last_name, email)
                 VALUES (?, ?, ${doctor_id}, ?, ?, ?)`;
   connection.query(
@@ -49,10 +54,12 @@ function storeReview(req, res) {
   );
 }
 
-function storeDoctors(req, res) {
-  const { first_name, last_name, adress, email, phone, spec } = req.body;
+function storeDoctor(req, res) {
+  const { first_name, last_name, address, email, phone, spec } = req.body;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegex = /^\+?\d{9,14}$/;
 
-  if (!first_name || !last_name || !email || !phone) {
+  if (!first_name || !last_name || !email || !phone || !address || !spec || first_name.length < 3 || last_name.length < 3 || address.length < 5 || !emailRegex.test(email) || !phoneRegex.test(phone)) {
     return res.status(400).json({ message: "Dati invalidi" });
   }
 
@@ -60,7 +67,7 @@ function storeDoctors(req, res) {
     "INSERT INTO doctors (first_name, last_name, address, email, phone, spec) VALUES (?, ?, ?, ?, ?, ?)";
   connection.query(
     sql,
-    [first_name, last_name, adress, email, phone, spec],
+    [first_name, last_name, address, email, phone, spec],
     (err, results) => {
       if (err) {
         return res.status(500).json(err);
@@ -74,4 +81,4 @@ function storeDoctors(req, res) {
   );
 }
 
-module.exports = { index, show, storeReview, storeDoctors };
+module.exports = { index, show, storeReview, storeDoctor };
