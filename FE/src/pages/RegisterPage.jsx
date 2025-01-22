@@ -1,5 +1,5 @@
 import React from "react";
 
 export default function RegisterPage() {
-  return <div>RegisterPage edit branch dm SADASDASDSADASD</div>;
+  return <div>RegisterPage edit branch dm SADASDASDSADASDsadasdadasdasd</div>;
 }
