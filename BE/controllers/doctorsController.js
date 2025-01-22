@@ -18,7 +18,21 @@ function show(req, res) {
                 error: 'Not Found',
                 message: 'Doctor not found',
             });
-        res.json(results);
+
+        const doctor = results[0]
+
+        const sql = `
+            SELECT *
+            FROM reviews
+            WHERE doctor_id = ?`
+
+        connection.query(sql, [id], (err, results) => {
+            if (err) return res.status(500).json({ message: err.message })
+
+            doctor.reviews = results
+
+            res.json(doctor)
+        })
     });
 }
 
