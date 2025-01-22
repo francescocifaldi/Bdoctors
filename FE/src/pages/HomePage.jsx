@@ -1,62 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import DoctorCard from '../components/DoctorCard';
-import { Link } from 'react-router';
-import { Row, Col } from 'react-bootstrap';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import DoctorCard from "../components/DoctorCard";
+import { Link } from "react-router";
+import { Row, Col } from "react-bootstrap";
+import axios from "axios";
 
 export default function HomePage() {
-    const [doctors, setDoctors] = useState([]);
-    const [specialization, setSpecialization] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [specialization, setSpecialization] = useState([]);
 
-    function fetchDoctors() {
-        axios
-            .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`)
-            .then((res) => {
-                setDoctors(res.data.doctors);
-                fillSpecializationArray();
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    }
+  function fetchDoctors() {
+    axios
+      .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`)
+      .then((res) => {
+        setDoctors(res.data.doctors);
 
-    // ciao
-    function fillSpecializationArray() {
-        let specializationArray = [];
+        fillSpecializationArray();
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
-        specializationArray = doctors.map((doctor) => {
-            if (!specializationArray.includes(doctor.spec))
-                specializationArray.push(doctor.spec);
-            setSpecialization(specializationArray);
-        });
-    }
+  // ciao
+  function fillSpecializationArray() {
+    let specializationArray = [];
 
-    useEffect(() => {
-        fetchDoctors();
-    }, []);
+    specializationArray = doctors.map((doctor) => {
+      if (!specializationArray.includes(doctor.spec))
+        specializationArray.push(doctor.spec);
+      setSpecialization(specializationArray);
+    });
+  }
 
-    // console.log(doctors);
-    console.log(specialization);
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
 
-    return (
-        <>
-            <label htmlFor="specialization">Filter by specialization</label>
-            <select id="specialization">
-                {specialization.map((spec, i) => (
-                    <option key={i} value={spec}>
-                        {spec}
-                    </option>
-                ))}
-            </select>
-            <Row>
-                {doctors.map((doctor) => (
-                    <Col key={doctor.id}>
-                        <Link to={`/doctor/${doctor.id}`}>
-                            <DoctorCard doctor={doctor}></DoctorCard>
-                        </Link>
-                    </Col>
-                ))}
-            </Row>
-        </>
-    );
+  // console.log(doctors);
+  console.log(specialization);
+
+  return (
+    <>
+      <label htmlFor="specialization">Filter by specializationasdsa</label>
+      <select id="specialization">
+        {specialization.map((spec, i) => (
+          <option key={i} value={spec}>
+            {spec}
+          </option>
+        ))}
+      </select>
+      <Row>
+        {doctors.map((doctor) => (
+          <Col key={doctor.id}>
+            <Link to={`/doctor/${doctor.id}`}>
+              <DoctorCard doctor={doctor}></DoctorCard>
+            </Link>
+          </Col>
+        ))}
+      </Row>
+    </>
+  );
 }
