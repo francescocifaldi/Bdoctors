@@ -13,29 +13,28 @@ export default function HomePage() {
             .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`)
             .then((res) => {
                 setDoctors(res.data.doctors);
-                fillSpecializationArray();
             })
             .catch((err) => {
                 console.error(err);
             });
     }
 
-    function fillSpecializationArray() {
-        let specializationArray = [];
-
-        specializationArray = doctors.map((doctor) => {
-            if (!specializationArray.includes(doctor.spec))
-                specializationArray.push(doctor.spec);
-            setSpecialization(specializationArray);
-        });
-    }
-
     useEffect(() => {
         fetchDoctors();
     }, []);
 
-    // console.log(doctors);
-    console.log(specialization);
+    useEffect(() => {
+        const uniqueSpecializations = [];
+        doctors.forEach((doctor) => {
+            if (!uniqueSpecializations.includes(doctor.spec)) {
+                uniqueSpecializations.push(doctor.spec);
+            }
+        });
+        setSpecialization(uniqueSpecializations);
+    }, [doctors]);
+
+    console.log(doctors);
+    // console.log(specialization);
 
     return (
         <>
