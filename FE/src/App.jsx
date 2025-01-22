@@ -1,6 +1,5 @@
 import './App.css';
 import { Route, Routes, BrowserRouter } from 'react-router';
-import 'bootstrap/dist/css/bootstrap.min.css';
 // Layout Import
 import DefaultLayout from './layouts/DefaultLayout';
 // Pages Import
@@ -15,8 +14,8 @@ function App() {
             <Routes>
                 <Route element={<DefaultLayout />}>
                     <Route index element={<HomePage />}></Route>
-                    <Route path="/search" element={<SearchPage />}></Route>
                     <Route path="/doctor">
+                        <Route path="search" element={<SearchPage />}></Route>
                         <Route path=":id" element={<DetailPage />}></Route>
                         <Route
                             path="register"

@@ -1,0 +1,13 @@
+a {
+    text-decoration: none;
+}
+
+#root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+}
