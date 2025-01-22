@@ -39,7 +39,9 @@ export default function HomePage() {
 
   return (
     <>
-      <label htmlFor="specialization">Filter by specialization test</label>
+      <label htmlFor="specialization">
+        Filter by specialization testsadsadasds
+      </label>
       <select id="specialization">
         {specialization.map((spec, i) => (
           <option key={i} value={spec}>
