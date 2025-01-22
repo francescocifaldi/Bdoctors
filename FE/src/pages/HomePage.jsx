@@ -7,6 +7,7 @@ import axios from 'axios';
 export default function HomePage() {
     const [doctors, setDoctors] = useState([]);
     const [specialization, setSpecialization] = useState([]);
+    const [filteredDoctors, setFilteredDoctors] = useState([]);
 
     function fetchDoctors() {
         axios
@@ -31,15 +32,32 @@ export default function HomePage() {
             }
         });
         setSpecialization(uniqueSpecializations);
+
+        setFilteredDoctors(doctors);
     }, [doctors]);
 
-    console.log(doctors);
+    function handleChange(e) {
+        const { value } = e.target;
+        console.log('change:', value);
+
+        if (value === 'None') {
+            setFilteredDoctors(doctors);
+        } else {
+            setFilteredDoctors(
+                doctors.filter((doctor) => doctor.spec === value)
+            );
+        }
+    }
+
+    // console.log(filteredDoctors);
+    // console.log(doctors);
     // console.log(specialization);
 
     return (
         <>
             <label htmlFor="specialization">Filter by specialization</label>
-            <select id="specialization">
+            <select onChange={handleChange} id="specialization">
+                <option value={'None'}>None</option>
                 {specialization.map((spec, i) => (
                     <option key={i} value={spec}>
                         {spec}
@@ -47,7 +65,7 @@ export default function HomePage() {
                 ))}
             </select>
             <Row>
-                {doctors.map((doctor) => (
+                {filteredDoctors.map((doctor) => (
                     <Col key={doctor.id}>
                         <Link to={`/doctor/${doctor.id}`}>
                             <DoctorCard doctor={doctor}></DoctorCard>
