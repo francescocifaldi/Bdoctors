@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import ReviewCard from "../components/ReviewCard";
 
+
+
 export default function DetailPage() {
     const [doctor, setDoctor] = useState(null)
     const { id } = useParams()
@@ -31,6 +33,10 @@ export default function DetailPage() {
 
 
 
+
+
+
+
     return (
         doctor && (
             <section>
@@ -40,7 +46,9 @@ export default function DetailPage() {
                     <p><strong>Email:</strong> {doctor.email}</p>
                     <p><strong>Telefono:</strong> {doctor.phone}</p>
                     <p><strong>Specializzazione:</strong> {doctor.spec}</p>
-                    <p><strong>Media voto:</strong> {doctor.avg_vote}</p>
+                    <p>voto: {parseInt(doctor.avg_vote)}</p>
+
+
                 </div>
                 <div>
                     <h2>Reviews</h2>
