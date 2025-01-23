@@ -40,6 +40,7 @@ export default function DetailPage() {
                     <p><strong>Email:</strong> {doctor.email}</p>
                     <p><strong>Telefono:</strong> {doctor.phone}</p>
                     <p><strong>Specializzazione:</strong> {doctor.spec}</p>
+                    <p><strong>Media voto:</strong> {doctor.avg_vote}</p>
                 </div>
                 <div>
                     <h2>Reviews</h2>

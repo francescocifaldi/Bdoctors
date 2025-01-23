@@ -10,7 +10,14 @@ function index(_, res) {
 
 function show(req, res) {
     const id = parseInt(req.params.id);
-    const sql = `SELECT * FROM doctors WHERE id = ?`;
+    const sql = `
+            SELECT doctors.*, AVG(vote) AS avg_vote 
+            FROM reviews
+            JOIN doctors
+            ON doctors.id = reviews.doctor_id 
+            WHERE doctors.id = ?
+            GROUP BY doctors.id`
+
     connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).json({ message: err.message });
         if (results.length === 0)
@@ -21,10 +28,12 @@ function show(req, res) {
 
         const doctor = results[0]
 
-        const sql = `
-            SELECT *
-            FROM reviews
-            WHERE doctor_id = ?`
+
+        const sql = `SELECT reviews.*
+                    FROM reviews
+                    join doctors
+                    on doctors.id = reviews.doctor_id
+                    WHERE doctors.id = ?`;
 
         connection.query(sql, [id], (err, results) => {
             if (err) return res.status(500).json({ message: err.message })
