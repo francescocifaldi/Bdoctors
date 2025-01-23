@@ -46,18 +46,22 @@ export default function DetailPage() {
                     <p><strong>Email:</strong> {doctor.email}</p>
                     <p><strong>Telefono:</strong> {doctor.phone}</p>
                     <p><strong>Specializzazione:</strong> {doctor.spec}</p>
-                    <p>voto: {parseInt(doctor.avg_vote)}</p>
+
 
 
                 </div>
                 <div>
                     <h2>Reviews</h2>
                     {doctor.reviews.length ?
-                        <ul>
-                            {doctor.reviews.map(review => (
-                                <ReviewCard reviews={review} key={review.id} />
-                            ))}
-                        </ul> :
+                        <>
+                            <p>voto: {parseInt(doctor.avg_vote)}</p>
+
+                            <ul>
+                                {doctor.reviews.map(review => (
+                                    <ReviewCard reviews={review} key={review.id} />
+                                ))}
+                            </ul>
+                        </> :
                         <div>Nessuna recensione</div>
                     }
                 </div>

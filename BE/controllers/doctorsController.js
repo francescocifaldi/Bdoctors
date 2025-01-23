@@ -12,8 +12,8 @@ function show(req, res) {
     const id = parseInt(req.params.id);
     const sql = `
             SELECT doctors.*, AVG(vote) AS avg_vote 
-            FROM reviews
-            JOIN doctors
+            FROM doctors
+            LEFT JOIN reviews
             ON doctors.id = reviews.doctor_id 
             WHERE doctors.id = ?
             GROUP BY doctors.id`
