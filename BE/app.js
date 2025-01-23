@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = parseInt(process.env.PORT);
+const port = parseInt(process.env.PORT) || 3000;
 const doctorsRouter = require("./routers/doctorsRouter");
 const cors = require("cors");
 const errorsHandler = require("./middlewares/errorsHandler");
@@ -19,10 +19,9 @@ app.get("/", (req, res) => {
 
 app.use("/api/doctors", doctorsRouter);
 
+app.use(errorsHandler);
 
-app.use(errorsHandler)
-
-app.use(notFound)
+app.use(notFound);
 
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
