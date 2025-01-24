@@ -27,6 +27,7 @@ function show(req, res) {
             });
 
         const doctor = results[0]
+        doctor.avg_vote = parseInt(doctor.avg_vote)
 
 
         const sql = `SELECT reviews.*

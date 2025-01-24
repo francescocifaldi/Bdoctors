@@ -11,6 +11,8 @@ const initialFormData = {
 export default function FormReview({ id, fetchDoctor }) {
 
     const [formData, setFormData] = useState(initialFormData)
+    const [isFormVAlid, setIsFormValid] = useState(true)
+
     function onFormChange(e) {
         const { value, name } = e.target
         console.log(value, name)
@@ -24,7 +26,22 @@ export default function FormReview({ id, fetchDoctor }) {
 
 
     function storeReview(e) {
+
         e.preventDefault()
+        setIsFormValid(true)
+
+        if (
+            !formData.first_name ||
+            !formData.last_name ||
+            !formData.email ||
+            !formData.review ||
+            !formData.vote ||
+            formData.vote < 1 ||
+            formData.vote > 5
+        ) {
+            setIsFormValid(false)
+            return
+        }
 
         axios.post(`${import.meta.env.VITE_ENV_URI}/api/doctors/${id}/review`, formData)
             .then(res => {
@@ -33,6 +50,7 @@ export default function FormReview({ id, fetchDoctor }) {
                 fetchDoctor()
             }).catch(err => {
                 console.log(err)
+                setIsFormValid(false)
 
             })
     }
@@ -68,6 +86,7 @@ export default function FormReview({ id, fetchDoctor }) {
                         </select>
                     </p>
                     <div>
+                        {isFormVAlid === false && <strong>I dati non sono validi</strong>}
                         <button>Invia</button>
                     </div>
                 </form>

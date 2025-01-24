@@ -20,11 +20,11 @@ export default function ReviewCard({ reviews }) {
 
     return (
         <div>
-            <p>Nome: {first_name}</p>
-            <p>Cognome: {last_name}</p>
-            <p>Email: {email}</p>
-            <p>Recensione: {review}</p>
-            <p>Voto:
+            <p><strong>Nome:</strong> {first_name}</p>
+            <p><strong>Cognome:</strong> {last_name}</p>
+            <p><strong>Email:</strong> {email}</p>
+            <p><strong>Recensione:</strong> {review}</p>
+            <p><strong>Voto:</strong>
                 <span>
                     {stars.map((star, i) => (
                         <FontAwesomeIcon key={i} icon={star} />
