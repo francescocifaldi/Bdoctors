@@ -51,6 +51,8 @@ function storeReview(req, res) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     console.log(dataObj, doctor_id);
 
+    const { first_name, last_name, email, review, vote } = dataObj;
+
     if (
         !first_name ||
         !last_name ||
@@ -67,11 +69,11 @@ function storeReview(req, res) {
     connection.query(
         sql,
         [
-            dataObj.review,
-            dataObj.vote,
-            dataObj.first_name,
-            dataObj.last_name,
-            dataObj.email,
+            review,
+            vote,
+            first_name,
+            last_name,
+            email,
         ],
         (err, response) => {
             if (err) {
