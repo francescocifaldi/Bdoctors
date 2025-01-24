@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import ReviewCard from "../components/ReviewCard";
+import FormReview from "../components/FormReview";
 
 
 
@@ -64,6 +65,10 @@ export default function DetailPage() {
                         </> :
                         <div>Nessuna recensione</div>
                     }
+                </div>
+                <div>
+                    <h2>Aggiungi recensione</h2>
+                    <FormReview id={id} fetchDoctor={fetchDoctor} />
                 </div>
             </section>
         )
