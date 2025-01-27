@@ -16,11 +16,13 @@ function index(req, res) {
 
     if (req.query.search) {
         if (params.length > 0) {
-            sql += ` AND doctors.first_name LIKE ?`;
+            sql += ` AND (doctors.first_name LIKE ? OR doctors.last_name LIKE ? OR doctors.spec LIKE ? OR doctors.address LIKE ? OR doctors.email LIKE ? OR doctors.phone LIKE ?)`;
         } else {
-            sql += ` WHERE doctors.first_name LIKE ?`;
+            sql += ` WHERE (doctors.first_name LIKE ? OR doctors.last_name LIKE ? OR doctors.spec LIKE ? OR doctors.address LIKE ? OR doctors.email LIKE ? OR doctors.phone LIKE ?)`;
         }
-        params.push(`%${req.query.search}%`);
+        const searchValue = `%${req.query.search}%`
+        params.push(searchValue, searchValue, searchValue, searchValue, searchValue, searchValue);
+
     }
 
 
