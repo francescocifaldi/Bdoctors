@@ -61,11 +61,11 @@ export default function FormReview({ id, fetchDoctor }) {
                 <form onSubmit={storeReview}>
                     <p>
                         <label htmlFor="first_name">Nome</label>
-                        <input required type="text" placeholder='Scrivi il tuo nome...' name='first_name' id='first_name' value={formData.first_name} onChange={onFormChange} />
+                        <input minLength={3} required type="text" placeholder='Scrivi il tuo nome...' name='first_name' id='first_name' value={formData.first_name} onChange={onFormChange} />
                     </p>
                     <p>
                         <label htmlFor="last_name">Cognome</label>
-                        <input required type="text" placeholder='Scrivi il tuo cognome...' name='last_name' id='last_name' value={formData.last_name} onChange={onFormChange} />
+                        <input minLength={3} required type="text" placeholder='Scrivi il tuo cognome...' name='last_name' id='last_name' value={formData.last_name} onChange={onFormChange} />
                     </p>
                     <p>
                         <label htmlFor="email">Email</label>
