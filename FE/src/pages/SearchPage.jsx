@@ -10,17 +10,17 @@ export default function SearchPage() {
     const [doctors, setDoctors] = useState([]);
     const [searchParams] = useSearchParams()
 
-    const query = searchParams.get('q');
+    const query = searchParams.get('spec');
+    console.log(query)
     
     useEffect(() => {
 
 
             axios.get(`${import.meta.env.VITE_ENV_URI}/api/doctors/search`, {
-                params: { q: query }
+                params: { spec: query }
             })
             .then(res => {
                 setDoctors(res.data.doctors);
-
             })
             .catch(err => {
                 console.error(err);

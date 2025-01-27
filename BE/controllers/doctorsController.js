@@ -6,8 +6,8 @@ function index(req, res) {
             LEFT JOIN reviews
             ON doctors.id = reviews.doctor_id `
 
-    if (req.query.q) {
-        sql += ` WHERE spec LIKE '%${req.query.q}%'`
+    if (req.query.spec) {
+        sql += ` WHERE spec LIKE ?`
     }
 
     sql += `GROUP BY doctors.id
@@ -16,7 +16,9 @@ function index(req, res) {
     if (req.query.home)
         sql += ` LIMIT 5`
 
-    connection.query(sql, (err, doctors) => {
+    const params = req.query.spec ? [`%${req.query.spec}%`] : [];
+
+    connection.query(sql, params, (err, doctors) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ doctors });
     });

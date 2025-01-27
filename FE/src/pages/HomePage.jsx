@@ -61,7 +61,7 @@ export default function HomePage() {
     function searchDoctors(e) {
         e.preventDefault()
         console.log(searchSpec)
-        navigate(`/doctor/search?q=${searchSpec}`);
+        navigate(`/doctor/search?spec=${searchSpec}`);
     }
 
     return (
