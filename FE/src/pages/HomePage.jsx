@@ -11,7 +11,11 @@ export default function HomePage() {
 
     function fetchDoctors() {
         axios
-            .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`)
+            .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`,{
+                params: {
+                  home: true
+                }
+            })
             .then((res) => {
                 setDoctors(res.data.doctors);
             })
