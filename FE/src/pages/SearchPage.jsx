@@ -33,6 +33,7 @@ export default function SearchPage() {
     }, [query, searchQuery]);
 
     return (
+        doctors.length?
         <>
             <Row>
                 <Col md={4}>
@@ -55,6 +56,9 @@ export default function SearchPage() {
                     </Col>
                 ))}
             </Row>
+            
         </>
+        :
+        <h1 className="text-center text-bg-danger">Non ci sono dottori</h1>
     );
 }

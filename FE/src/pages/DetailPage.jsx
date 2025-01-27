@@ -48,7 +48,7 @@ export default function DetailPage() {
   }
 
   return (
-    doctor && (
+    
       <section>
         <div>
           <h1>
@@ -95,7 +95,6 @@ export default function DetailPage() {
           <h2>Aggiungi recensione</h2>
           <FormReview id={id} fetchDoctor={fetchDoctor} />
         </div>
-      </section>
+      </section> 
     )
-  );
 }

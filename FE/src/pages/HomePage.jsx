@@ -101,13 +101,13 @@ export default function HomePage() {
         </Form>
       </Row>
       <Row>
-        {doctors.map((doctor) => (
+         {doctors.map((doctor) => (
           <Col key={doctor.id}>
             <Link to={`/doctor/${doctor.id}`}>
               <DoctorCard doctor={doctor}></DoctorCard>
             </Link>
           </Col>
-        ))}
+        ))} 
       </Row>
     </>
   );
