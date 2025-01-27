@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DoctorCard from "../components/DoctorCard";
 import { Link } from "react-router";
 import { Row, Col, Button, Form } from "react-bootstrap";
+import GlobalContext from "../../contexts/globalContext";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
 export default function HomePage() {
   const [doctors, setDoctors] = useState([]);
   const [searchSpec, setSearchSpec] = useState("");
+  const { setIsLoading, isLoading } = useContext(GlobalContext);
   const navigate = useNavigate();
 
   function fetchDoctors() {
+    setIsLoading(true);
     axios
       .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`, {
         params: {
@@ -22,6 +25,9 @@ export default function HomePage() {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
