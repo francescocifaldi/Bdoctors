@@ -3,6 +3,8 @@ import { useState } from 'react';
 import axios from 'axios';
 
 export default function RegisterPage() {
+    const [isFormVAlid, setIsFormValid] = useState(true)
+
     const initialFormData = {
         first_name: '',
         last_name: '',
@@ -15,7 +17,19 @@ export default function RegisterPage() {
     const [formData, setFormData] = useState(initialFormData);
 
     function storeDoctor(e) {
-        e.preventDefault();
+        e.preventDefault()
+        setIsFormValid(true)
+        if (
+            !formData.first_name ||
+            !formData.last_name ||
+            !formData.email ||
+            !formData.phone ||
+            !formData.spec
+
+        ) {
+            setIsFormValid(false)
+            return
+        }
         axios
             .post(`${import.meta.env.VITE_ENV_URI}/api/doctors`, formData)
             .then((res) => {
@@ -24,6 +38,7 @@ export default function RegisterPage() {
             })
             .catch((err) => {
                 console.error(err);
+                setIsFormValid(false);
             });
     }
     function onFormChange(e) {
@@ -43,6 +58,7 @@ export default function RegisterPage() {
                         Nome
                     </label>
                     <input
+                        minLength={3}
                         type="text"
                         className="form-control"
                         id="first_name"
@@ -57,6 +73,7 @@ export default function RegisterPage() {
                         Cognome
                     </label>
                     <input
+                        minLength={3}
                         type="text"
                         className="form-control"
                         id="last_name"
@@ -85,7 +102,7 @@ export default function RegisterPage() {
                         Email
                     </label>
                     <input
-                        type="text"
+                        type="email"
                         className="form-control"
                         id="email"
                         name="email"
@@ -99,7 +116,8 @@ export default function RegisterPage() {
                         Telefono
                     </label>
                     <input
-                        type="text"
+                        type="tel"
+                        pattern='^\+?\d{9,14}$'
                         className="form-control"
                         id="phone"
                         name="phone"
@@ -122,9 +140,8 @@ export default function RegisterPage() {
                         onChange={onFormChange}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">
-                    submit
-                </button>
+                {isFormVAlid === false && <strong>I dati non sono validi</strong>}
+                <button>Invia</button>
             </form>
         </>
     );
