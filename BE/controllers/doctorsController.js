@@ -4,8 +4,13 @@ function index(req, res) {
     let sql = `SELECT doctors.*, AVG(vote) AS avg_vote 
             FROM doctors
             LEFT JOIN reviews
-            ON doctors.id = reviews.doctor_id 
-            GROUP BY doctors.id
+            ON doctors.id = reviews.doctor_id `
+
+    if (req.query.q) {
+        sql += ` WHERE spec LIKE '%${req.query.q}%'`
+    }
+
+    sql += `GROUP BY doctors.id
             ORDER BY avg_vote DESC`
 
     if (req.query.home)

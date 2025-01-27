@@ -3,11 +3,12 @@ import DoctorCard from '../components/DoctorCard';
 import { Link } from 'react-router';
 import { Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 export default function HomePage() {
     const [doctors, setDoctors] = useState([]);
-    const [specialization, setSpecialization] = useState([]);
-    const [filteredDoctors, setFilteredDoctors] = useState([]);
+    const [searchSpec, setSearchSpec] = useState('');
+    const navigate = useNavigate();
 
     function fetchDoctors() {
         axios
@@ -28,38 +29,44 @@ export default function HomePage() {
         fetchDoctors();
     }, []);
 
-    useEffect(() => {
-        const uniqueSpecializations = [];
-        doctors.forEach((doctor) => {
-            if (!uniqueSpecializations.includes(doctor.spec)) {
-                uniqueSpecializations.push(doctor.spec);
-            }
-        });
-        setSpecialization(uniqueSpecializations);
+    // useEffect(() => {
+    //     const uniqueSpecializations = [];
+    //     doctors.forEach((doctor) => {
+    //         if (!uniqueSpecializations.includes(doctor.spec)) {
+    //             uniqueSpecializations.push(doctor.spec);
+    //         }
+    //     });
+    //     setSpecialization(uniqueSpecializations);
 
-        setFilteredDoctors(doctors);
-    }, [doctors]);
+    //     setFilteredDoctors(doctors);
+    // }, [doctors]);
 
-    function handleChange(e) {
-        const { value } = e.target;
-        console.log('change:', value);
+    // function handleChange(e) {
+    //     const { value } = e.target;
+    //     console.log('change:', value);
 
-        if (value === 'None') {
-            setFilteredDoctors(doctors);
-        } else {
-            setFilteredDoctors(
-                doctors.filter((doctor) => doctor.spec === value)
-            );
-        }
-    }
+    //     if (value === 'None') {
+    //         setFilteredDoctors(doctors);
+    //     } else {
+    //         setFilteredDoctors(
+    //             doctors.filter((doctor) => doctor.spec === value)
+    //         );
+    //     }
+    // }
 
     // console.log(filteredDoctors);
     // console.log(doctors);
     // console.log(specialization);
 
+    function searchDoctors(e) {
+        e.preventDefault()
+        console.log(searchSpec)
+        navigate(`/doctor/search?q=${searchSpec}`);
+    }
+
     return (
         <>
-            <label htmlFor="specialization">Filter by specialization</label>
+            {/* <label htmlFor="specialization">Filter by specialization</label>
             <select onChange={handleChange} id="specialization">
                 <option value={'None'}>None</option>
                 {specialization.map((spec, i) => (
@@ -67,9 +74,13 @@ export default function HomePage() {
                         {spec}
                     </option>
                 ))}
-            </select>
+            </select> */}
+            <form onSubmit={searchDoctors} className='flex gap-3'>
+          <input className='border rounded-lg py-2 px-3' type="text" placeholder='Cerca specializzazione' value={searchSpec} onChange={(e) => setSearchSpec(e.target.value ) } />
+          <button className='rounded-lg py-2 px-3 bg-blue-950 active:bg-blue-700 hover:bg-blue-800 text-white'>cerca</button>
+        </form>
             <Row>
-                {filteredDoctors.map((doctor) => (
+                {doctors.map((doctor) => (
                     <Col key={doctor.id}>
                         <Link to={`/doctor/${doctor.id}`}>
                             <DoctorCard doctor={doctor}></DoctorCard>
