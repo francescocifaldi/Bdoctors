@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DoctorCard from "../components/DoctorCard";
 import { Link } from "react-router";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
@@ -75,18 +75,25 @@ export default function HomePage() {
                     </option>
                 ))}
             </select> */}
-      <form onSubmit={searchDoctors} className="flex gap-3">
-        <input
-          className="border rounded-lg py-2 px-3"
-          type="text"
-          placeholder="Cerca specializzazione"
-          value={searchSpec}
-          onChange={(e) => setSearchSpec(e.target.value)}
-        />
-        <button className="btn btn-primary rounded-lg py-2 px-3 text-white">
-          cerca
-        </button>
-      </form>
+      <Row className="mb-3">
+        <Form onSubmit={searchDoctors}>
+          <Row>
+            <Col md={4}>
+              <Form.Control
+                type="text"
+                placeholder="Cerca specializzazione"
+                value={searchSpec}
+                onChange={(e) => setSearchSpec(e.target.value)}
+              />
+            </Col>
+            <Col>
+              <Button variant="primary" type="submit">
+                Cerca
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </Row>
       <Row>
         {doctors.map((doctor) => (
           <Col key={doctor.id}>
