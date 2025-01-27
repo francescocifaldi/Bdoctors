@@ -1,7 +1,16 @@
 const connection = require('../data/db');
 
-function index(_, res) {
-    const sql = `SELECT * FROM doctors`;
+function index(req, res) {
+    let sql = `SELECT doctors.*, AVG(vote) AS avg_vote 
+            FROM doctors
+            LEFT JOIN reviews
+            ON doctors.id = reviews.doctor_id 
+            GROUP BY doctors.id
+            ORDER BY avg_vote DESC`
+
+    if (req.query.home)
+        sql += ` LIMIT 5`
+
     connection.query(sql, (err, doctors) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ doctors });
