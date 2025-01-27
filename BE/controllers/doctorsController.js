@@ -3,26 +3,45 @@ const connection = require('../data/db');
 function index(req, res) {
     let sql = `SELECT doctors.*, AVG(vote) AS avg_vote 
             FROM doctors
-            LEFT JOIN reviews
-            ON doctors.id = reviews.doctor_id `
+            LEFT JOIN reviews ON doctors.id = reviews.doctor_id`;
+
+    const params = [];
+
 
     if (req.query.spec) {
-        sql += ` WHERE spec LIKE ?`
+        sql += ` WHERE spec LIKE ?`;
+        params.push(`%${req.query.spec}%`);
     }
 
-    sql += `GROUP BY doctors.id
-            ORDER BY avg_vote DESC`
 
-    if (req.query.home)
-        sql += ` LIMIT 5`
+    if (req.query.search) {
+        if (params.length > 0) {
+            sql += ` AND doctors.first_name LIKE ?`;
+        } else {
+            sql += ` WHERE doctors.first_name LIKE ?`;
+        }
+        params.push(`%${req.query.search}%`);
+    }
 
-    const params = req.query.spec ? [`%${req.query.spec}%`] : [];
+
+    sql += ` GROUP BY doctors.id ORDER BY avg_vote DESC`;
+
+
+    if (req.query.home) {
+        sql += ` LIMIT 5`;
+    }
+
+
 
     connection.query(sql, params, (err, doctors) => {
-        if (err) return res.status(500).json({ message: err.message });
+        if (err) {
+            console.error("Errore SQL:", err);
+            return res.status(500).json({ message: err.message });
+        }
         res.json({ doctors });
     });
 }
+
 
 function show(req, res) {
     const id = parseInt(req.params.id);
