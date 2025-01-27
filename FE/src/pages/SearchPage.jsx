@@ -47,9 +47,9 @@ export default function SearchPage() {
                 </Col>
             </Row>
 
-            <Row>
+            <Row className="row-gap-3 mb-5">
                 {doctors.map((doctor) => (
-                    <Col key={doctor.id}>
+                    <Col lg={3} md={6} key={doctor.id}>
                         <Link to={`/doctor/${doctor.id}`}>
                             <DoctorCard doctor={doctor}></DoctorCard>
                         </Link>
