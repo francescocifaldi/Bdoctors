@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DoctorCard from '../components/DoctorCard';
 import { Link } from 'react-router';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 
@@ -12,10 +12,10 @@ export default function HomePage() {
 
     function fetchDoctors() {
         axios
-            .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`,{
+            .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`, {
                 params: {
-                  home: true
-                }
+                    home: true,
+                },
             })
             .then((res) => {
                 setDoctors(res.data.doctors);
@@ -59,8 +59,8 @@ export default function HomePage() {
     // console.log(specialization);
 
     function searchDoctors(e) {
-        e.preventDefault()
-        console.log(searchSpec)
+        e.preventDefault();
+        console.log(searchSpec);
         navigate(`/doctor/search?spec=${searchSpec}`);
     }
 
@@ -75,10 +75,18 @@ export default function HomePage() {
                     </option>
                 ))}
             </select> */}
-            <form onSubmit={searchDoctors} className='flex gap-3'>
-          <input className='border rounded-lg py-2 px-3' type="text" placeholder='Cerca specializzazione' value={searchSpec} onChange={(e) => setSearchSpec(e.target.value ) } />
-          <button className='rounded-lg py-2 px-3 bg-blue-950 active:bg-blue-700 hover:bg-blue-800 text-white'>cerca</button>
-        </form>
+            <form onSubmit={searchDoctors} className="flex gap-3">
+                <input
+                    className="border rounded-lg py-2 px-3"
+                    type="text"
+                    placeholder="Cerca specializzazione"
+                    value={searchSpec}
+                    onChange={(e) => setSearchSpec(e.target.value)}
+                />
+                <Button variant="primary" type="submit">
+                    Cerca
+                </Button>
+            </form>
             <Row>
                 {doctors.map((doctor) => (
                     <Col key={doctor.id}>
