@@ -79,7 +79,7 @@ export default function SearchPage() {
        
         </>
         : 
-        <div className="container text-center">
+        <div className="container text-light text-center">
             <h1>Pagina non trovata!</h1>
             
                 <p>La ricerca non ha prodotto risultati. <br />
