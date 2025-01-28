@@ -1,13 +1,14 @@
 a {
     text-decoration: none;
 }
-
 #root {
-    height: 100vh;
+    
     display: flex;
     flex-direction: column;
+    background-image: linear-gradient(to top, rgb(15, 23, 42), rgb(16, 185, 129), rgb(3, 105, 161));
 }
 
 main {
+    
     flex-grow: 1;
 }

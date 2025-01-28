@@ -1,34 +1,30 @@
-import { useState } from 'react'
-import axios from 'axios'
+import { useState } from "react";
+import axios from "axios";
 
 const initialFormData = {
     vote: 1,
-    first_name: '',
-    last_name: '',
-    email: '',
-    review: ''
-}
+    first_name: "",
+    last_name: "",
+    email: "",
+    review: "",
+};
 export default function FormReview({ id, fetchDoctor }) {
-
-    const [formData, setFormData] = useState(initialFormData)
-    const [isFormVAlid, setIsFormValid] = useState(true)
+    const [formData, setFormData] = useState(initialFormData);
+    const [isFormVAlid, setIsFormValid] = useState(true);
 
     function onFormChange(e) {
-        const { value, name } = e.target
-        console.log(value, name)
+        const { value, name } = e.target;
+        console.log(value, name);
 
         setFormData({
             ...formData,
-            [name]: value
-        })
-
+            [name]: value,
+        });
     }
 
-
     function storeReview(e) {
-
-        e.preventDefault()
-        setIsFormValid(true)
+        e.preventDefault();
+        setIsFormValid(true);
 
         if (
             !formData.first_name ||
@@ -39,8 +35,8 @@ export default function FormReview({ id, fetchDoctor }) {
             formData.vote < 1 ||
             formData.vote > 5
         ) {
-            setIsFormValid(false)
-            return
+            setIsFormValid(false);
+            return;
         }
 
         axios.post(`${import.meta.env.VITE_ENV_URI}/api/doctors/${id}/review`, formData)
@@ -58,7 +54,7 @@ export default function FormReview({ id, fetchDoctor }) {
         <div>
 
             <div className='p-4'>
-                <form onSubmit={storeReview}>
+                <form className='form-review' onSubmit={storeReview}>
                     <p>
                         <label htmlFor="first_name">Nome</label>
                         <input minLength={3} required type="text" placeholder='Scrivi il tuo nome...' name='first_name' id='first_name' value={formData.first_name} onChange={onFormChange} />
