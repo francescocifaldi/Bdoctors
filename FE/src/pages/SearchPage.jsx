@@ -43,7 +43,8 @@ export default function SearchPage() {
     }, []);
 
     return (
-        <section className="container">
+        doctors.length?
+        <>
             <Row>
                 <Col md={4}>
                     <Form className='d-flex align-items-center mb-3' onSubmit={fetchDoctors}>
@@ -75,6 +76,17 @@ export default function SearchPage() {
                 ))}
             </Row>
 
-        </section>
+       
+        </>
+        : 
+        <div className="container text-light text-center">
+            <h1>Pagina non trovata!</h1>
+            
+                <p>La ricerca non ha prodotto risultati. <br />
+                   Prova a cercare un altro dottore o una specializzazione diversa.
+                </p>  
+              
+        </div>
+          
     );
 }
