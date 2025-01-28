@@ -6,30 +6,32 @@ import { NavLink } from "react-router";
 
 export default function Header() {
   return (
-    <Navbar
-      //   style={{
-      //     backgroundColor: "rgb(3, 105, 161)",
-      //   }}
-      data-bs-theme="dark"
-    >
-      <Container>
-        <NavLink to="/">
-          <Navbar.Brand>BDoctors</Navbar.Brand>
-        </NavLink>
+    <div style={{ height: "10vh" }}>
+      <Navbar
+        //   style={{
+        //     backgroundColor: "rgb(3, 105, 161)",
+        //   }}
+        data-bs-theme="dark"
+      >
+        <Container>
+          <NavLink to="/">
+            <Navbar.Brand>BDoctors</Navbar.Brand>
+          </NavLink>
 
-        <Nav>
-          <Nav.Link as={NavLink} to="/">
-            Home
-          </Nav.Link>
-          <Nav.Link as={NavLink} to="/doctor/search">
-            Search
-          </Nav.Link>
+          <Nav>
+            <Nav.Link as={NavLink} to="/">
+              Home
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/doctor/search">
+              Search
+            </Nav.Link>
 
-          <Nav.Link as={NavLink} to="/doctor/register">
-            Register
-          </Nav.Link>
-        </Nav>
-      </Container>
-    </Navbar>
+            <Nav.Link as={NavLink} to="/doctor/register">
+              Register
+            </Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+    </div>
   );
 }
