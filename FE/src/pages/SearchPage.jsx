@@ -76,6 +76,8 @@ export default function SearchPage() {
                 ))}
             </Row>
 
-        </section>
+       
+        </>
+        :<h1>Non ci sono dottori</h1>
     );
 }
