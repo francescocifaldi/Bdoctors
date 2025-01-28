@@ -78,6 +78,15 @@ export default function SearchPage() {
 
        
         </>
-        :<p>Non ci sono dottori.</p> 
+        : 
+        <div className="container text-center">
+            <h1>Pagina non trovata!</h1>
+            
+                <p>La ricerca non ha prodotto risultati. <br />
+                   Prova a cercare un altro dottore o una specializzazione diversa.
+                </p>  
+              
+        </div>
+          
     );
 }
