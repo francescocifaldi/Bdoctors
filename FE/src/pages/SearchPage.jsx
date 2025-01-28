@@ -78,6 +78,6 @@ export default function SearchPage() {
 
        
         </>
-        :<h1>Non ci sono dottori</h1>
+        :<p>Non ci sono dottori.</p> 
     );
 }
