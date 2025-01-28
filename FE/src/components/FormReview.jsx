@@ -58,7 +58,7 @@ export default function FormReview({ id, fetchDoctor }) {
         <div>
 
             <div className='p-4'>
-                <form onSubmit={storeReview}>
+                <form className='form-review' onSubmit={storeReview}>
                     <p>
                         <label htmlFor="first_name">Nome</label>
                         <input minLength={3} required type="text" placeholder='Scrivi il tuo nome...' name='first_name' id='first_name' value={formData.first_name} onChange={onFormChange} />
