@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import DoctorCard from '../components/DoctorCard';
-import { Row, Col, Form } from 'react-bootstrap';
+import { Row, Col, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useSearchParams } from 'react-router';
 
@@ -13,7 +13,13 @@ export default function SearchPage() {
 
     const query = searchParams.get('spec');
 
-    useEffect(() => {
+    function fetchDoctors(e) {
+
+
+        if (e) {
+            e.preventDefault();
+        }
+
         const params = { spec: query };
 
         if (searchQuery) {
@@ -30,20 +36,33 @@ export default function SearchPage() {
             .catch((err) => {
                 console.error('Errore nel recupero dei dottori:', err);
             });
-    }, [query, searchQuery]);
+    }
+
+    useEffect(() => {
+        fetchDoctors();
+    }, []);
 
     return (
         <section className="container">
             <Row>
                 <Col md={4}>
-                    <Form.Control
-                        className="mb-3"
-                        type="text"
-                        placeholder="Cerca Dottore"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
+                    <Form className='d-flex align-items-center mb-3' onSubmit={fetchDoctors}>
+                        <Form.Control
+                            type="text"
+                            placeholder="Cerca Dottore"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <Button
+                            className="w-25"
+                            type="submit"
+                            variant="primary"
+                        >
+                            Invia
+                        </Button>
+                    </Form>
                 </Col>
+
             </Row>
 
             <Row className="row-gap-3 mb-5">
@@ -55,6 +74,7 @@ export default function SearchPage() {
                     </Col>
                 ))}
             </Row>
+
         </section>
     );
 }
