@@ -15,9 +15,7 @@ export default function HomePage() {
         setIsLoading(true);
         axios
             .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`, {
-                params: {
-                    home: true,
-                },
+
             })
             .then((res) => {
                 setDoctors(res.data.doctors);
@@ -29,6 +27,8 @@ export default function HomePage() {
                 setIsLoading(false);
             });
     }
+
+    const limitDoctors = doctors.slice(0, 5);
 
     useEffect(() => {
         fetchDoctors();
@@ -46,11 +46,17 @@ export default function HomePage() {
                     <Row lg={4}>
                         <Col>
                             <Form.Control
-                                type="text"
-                                placeholder="Cerca specializzazione"
+                                as="select"
                                 value={searchSpec}
                                 onChange={(e) => setSearchSpec(e.target.value)}
-                            />
+                            >
+                                <option value="">Seleziona Specializzazione</option>
+                                {doctors.map((doctor) => (
+                                    <option key={doctor.id} value={doctor.spec}>
+                                        {doctor.spec}
+                                    </option>
+                                ))}
+                            </Form.Control>
                         </Col>
                         <Col>
                             <Button variant="primary" type="submit">
@@ -61,7 +67,7 @@ export default function HomePage() {
                 </Form>
             </Row>
             <Row className="row-gap-3" xl={5} lg={4} md={3} xs={1} sm={2}>
-                {doctors.map((doctor) => (
+                {limitDoctors.map((doctor) => (
                     <Col key={doctor.id}>
                         <Link to={`/doctor/${doctor.id}`}>
                             <DoctorCard doctor={doctor} />

@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router';
 import DoctorCard from '../components/DoctorCard';
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 export default function SearchPage() {
     const location = useLocation();
@@ -10,6 +11,7 @@ export default function SearchPage() {
     const [searchSpec, setSearchSpec] = useState('');
     const [searchName, setSearchName] = useState('');
     const [searchLastName, setSearchLastName] = useState('');
+    const [vote, setVote] = useState('');
 
     const fetchDoctors = (params = {}) => {
         axios
@@ -17,6 +19,8 @@ export default function SearchPage() {
                 params,
             })
             .then((response) => {
+                console.log(response.data.doctors);
+
                 setDoctors(response.data.doctors);
             })
             .catch((err) => {
@@ -27,7 +31,7 @@ export default function SearchPage() {
     useEffect(() => {
         const initialSpec = location.state?.initialSpec || '';
         setSearchSpec(initialSpec);
-        
+
         if (initialSpec) {
             fetchDoctors({ searchSpec: initialSpec });
         } else fetchDoctors()
@@ -42,7 +46,8 @@ export default function SearchPage() {
         const params = {
             searchSpec,
             searchName,
-            searchLastName
+            searchLastName,
+            vote
         };
 
         fetchDoctors(params);
@@ -52,8 +57,11 @@ export default function SearchPage() {
         setSearchSpec('');
         setSearchName('');
         setSearchLastName('');
+        setVote('');
         fetchDoctors();
     };
+
+    const navigate = useNavigate();
 
     return (
         <>
@@ -64,11 +72,29 @@ export default function SearchPage() {
                         onSubmit={handleSubmit}
                     >
                         <Form.Control
-                            type="text"
-                            placeholder="Cerca Specializzazione"
+                            as="select"
                             value={searchSpec}
                             onChange={(e) => setSearchSpec(e.target.value)}
-                        />
+                        >
+                            <option value="">Seleziona Specializzazione</option>
+                            {doctors.map((doctor) => (
+                                <option key={doctor.id} value={doctor.spec}>
+                                    {doctor.spec}
+                                </option>
+                            ))}
+                        </Form.Control>
+                        <Form.Control
+                            as="select"
+                            value={vote}
+                            onChange={(e) => setVote(e.target.value)} // Settiamo il voto medio selezionato
+                        >
+                            <option value="">Filtra per Voto Medio</option>
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </Form.Control>
                         <Form.Control
                             type="text"
                             placeholder="Cerca Nome"
@@ -98,7 +124,9 @@ export default function SearchPage() {
                                 Azzera filtri
                             </Button>
                         </div>
+
                     </Form>
+
                 </Col>
             </Row>
 
