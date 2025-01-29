@@ -14,8 +14,6 @@ export default function SearchPage() {
     const query = searchParams.get('spec');
 
     function fetchDoctors(e) {
-
-
         if (e) {
             e.preventDefault();
         }
@@ -43,11 +41,13 @@ export default function SearchPage() {
     }, []);
 
     return (
-        doctors.length?
         <>
             <Row>
                 <Col md={4}>
-                    <Form className='d-flex align-items-center mb-3' onSubmit={fetchDoctors}>
+                    <Form
+                        className="d-flex align-items-center mb-3"
+                        onSubmit={fetchDoctors}
+                    >
                         <Form.Control
                             type="text"
                             placeholder="Cerca Dottore"
@@ -63,7 +63,6 @@ export default function SearchPage() {
                         </Button>
                     </Form>
                 </Col>
-
             </Row>
 
             <Row className="row-gap-3 mb-5">
@@ -75,18 +74,6 @@ export default function SearchPage() {
                     </Col>
                 ))}
             </Row>
-
-       
         </>
-        : 
-        <div className="container text-light text-center">
-            <h1>Pagina non trovata!</h1>
-            
-                <p>La ricerca non ha prodotto risultati. <br />
-                   Prova a cercare un altro dottore o una specializzazione diversa.
-                </p>  
-              
-        </div>
-          
     );
 }

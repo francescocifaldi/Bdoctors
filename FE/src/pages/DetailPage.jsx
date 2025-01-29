@@ -18,7 +18,6 @@ export default function DetailPage() {
         setIsLoading(true);
         axios
             .get(`${import.meta.env.VITE_ENV_URI}/api/doctors/${id}`)
-
             .then((res) => {
                 console.log(res.data);
                 setDoctor(res.data);
@@ -50,10 +49,13 @@ export default function DetailPage() {
     return (
         doctor && (
             <section className="container">
-                <div className='doctor-info'>
-                    <div className='doctor-card'>
+                <div className="doctor-info">
+                    <div className="doctor-card">
                         <figure>
-                            <img src="https://picsum.photos/id/237/200/300" alt="" />
+                            <img
+                                src="https://picsum.photos/id/237/200/300"
+                                alt=""
+                            />
                         </figure>
                         <h1>
                             {doctor.first_name} {doctor.last_name}
@@ -70,7 +72,7 @@ export default function DetailPage() {
                         <p>
                             <strong>Specializzazione:</strong> {doctor.spec}
                         </p>
-                        {doctor.reviews.length &&
+                        {doctor.reviews.length && (
                             <p>
                                 <strong>voto:</strong>
                                 <span>
@@ -79,13 +81,12 @@ export default function DetailPage() {
                                     ))}
                                 </span>
                             </p>
-                        }
+                        )}
                     </div>
 
                     {doctor.reviews.length ? (
                         <>
-
-                            <div className='reviews-list'>
+                            <div className="reviews-list">
                                 <h2>Recensioni</h2>
                                 <ul>
                                     {doctor.reviews.map((review) => (
