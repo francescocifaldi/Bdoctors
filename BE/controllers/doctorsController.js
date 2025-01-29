@@ -6,33 +6,43 @@ function index(req, res) {
             LEFT JOIN reviews ON doctors.id = reviews.doctor_id`;
 
     const params = [];
+    const conditions = [];
 
+    // Filtro per specializzazione
+    if (req.query.searchSpec) {
+        conditions.push(`spec LIKE ?`);
+        params.push(`%${req.query.searchSpec}%`);
+    }
 
-    if (req.query.spec) {
-        sql += ` WHERE spec LIKE ?`;
-        params.push(`%${req.query.spec}%`);
+    // Filtro per nome
+    if (req.query.searchName) {
+        conditions.push(`doctors.first_name LIKE ?`);
+        params.push(`%${req.query.searchName}%`);
+    }
+
+    // Filtro per cognome
+    if (req.query.searchLastName) {
+        conditions.push(`doctors.last_name LIKE ?`);
+        params.push(`%${req.query.searchLastName}%`);
+    }
+
+    // Unisci le condizioni
+    if (conditions.length > 0) {
+        sql += ` WHERE ${conditions.join(' AND ')}`;
     }
 
 
-    if (req.query.search) {
-        if (params.length > 0) {
-            sql += ` AND (doctors.first_name LIKE ? OR doctors.last_name LIKE ? OR doctors.spec LIKE ? OR doctors.address LIKE ? OR doctors.email LIKE ? OR doctors.phone LIKE ?)`;
-        } else {
-            sql += ` WHERE (doctors.first_name LIKE ? OR doctors.last_name LIKE ? OR doctors.spec LIKE ? OR doctors.address LIKE ? OR doctors.email LIKE ? OR doctors.phone LIKE ?)`;
-        }
-        const searchValue = `%${req.query.search}%`
-        params.push(searchValue, searchValue, searchValue, searchValue, searchValue, searchValue);
+    // Aggiungi il raggruppamento per ogni dottore
+    sql += ` GROUP BY doctors.id`;
 
+    // Aggiungi il filtro per voto medio (usando HAVING)
+    if (req.query.vote) {
+        sql += ` HAVING avg_vote >= ?`;
+        params.push(req.query.vote);
     }
 
-
-    sql += ` GROUP BY doctors.id ORDER BY avg_vote DESC`;
-
-
-    if (req.query.home) {
-        sql += ` LIMIT 5`;
-    }
-
+    // Ordina per voto medio
+    sql += ` ORDER BY avg_vote DESC`;
 
 
     connection.query(sql, params, (err, doctors) => {
