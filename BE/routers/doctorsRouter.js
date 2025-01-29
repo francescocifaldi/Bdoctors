@@ -6,10 +6,10 @@ router.get("/", doctorsController.index);
 
 router.get("/search", doctorsController.index);
 
-router.get("/:id", doctorsController.show);
+router.get("/:slug", doctorsController.show);
 
-router.post("/:id/review", doctorsController.storeReview);
+router.post("/:slug/review", doctorsController.storeReview);
 
-router.post("/", doctorsController.storeDoctor);
+router.post("/register", doctorsController.storeDoctor);
 
 module.exports = router;

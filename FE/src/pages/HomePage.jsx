@@ -129,7 +129,7 @@ export default function HomePage() {
               key={doctor.id}
               className="d-flex flex-column align-items-center"
             >
-              <Link to={`/doctor/${doctor.id}`}>
+              <Link to={`/doctor/${doctor.slug}`}>
                 <DoctorCard doctor={doctor}></DoctorCard>
               </Link>
             </Col>

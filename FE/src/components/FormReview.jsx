@@ -8,7 +8,7 @@ const initialFormData = {
     email: "",
     review: "",
 };
-export default function FormReview({ id, fetchDoctor }) {
+export default function FormReview({ slug, fetchDoctor }) {
     const [formData, setFormData] = useState(initialFormData);
     const [isFormVAlid, setIsFormValid] = useState(true);
 
@@ -39,7 +39,7 @@ export default function FormReview({ id, fetchDoctor }) {
             return;
         }
 
-        axios.post(`${import.meta.env.VITE_ENV_URI}/api/doctors/${id}/review`, formData)
+        axios.post(`${import.meta.env.VITE_ENV_URI}/api/doctors/${slug}/review`, formData)
             .then(res => {
                 console.log(res)
                 setFormData(initialFormData)

@@ -25,7 +25,7 @@ function App() {
                                 path="search"
                                 element={<SearchPage />}
                             ></Route>
-                            <Route path=":id" element={<DetailPage />}></Route>
+                            <Route path=":slug" element={<DetailPage />}></Route>
                             <Route
                                 path="register"
                                 element={<RegisterPage />}

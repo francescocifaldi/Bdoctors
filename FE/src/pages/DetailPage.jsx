@@ -13,12 +13,12 @@ import { useNavigate } from 'react-router';
 export default function DetailPage() {
     const { setIsLoading, isLoading } = useContext(GlobalContext);
     const [doctor, setDoctor] = useState(null);
-    const { id } = useParams();
+    const { slug } = useParams();
 
     function fetchDoctor() {
         setIsLoading(true);
         axios
-            .get(`${import.meta.env.VITE_ENV_URI}/api/doctors/${id}`)
+            .get(`${import.meta.env.VITE_ENV_URI}/api/doctors/${slug}`)
             .then((res) => {
                 console.log(res.data);
                 setDoctor(res.data);
@@ -33,7 +33,7 @@ export default function DetailPage() {
 
     useEffect(() => {
         fetchDoctor();
-    }, [id]);
+    }, [slug]);
 
     const stars = [];
 
@@ -115,7 +115,7 @@ export default function DetailPage() {
                 </div>
                 <div>
                     <h2>Aggiungi recensione</h2>
-                    <FormReview id={id} fetchDoctor={fetchDoctor} />
+                    <FormReview slug={slug} fetchDoctor={fetchDoctor} />
                 </div>
             </section>
         )

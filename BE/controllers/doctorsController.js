@@ -56,16 +56,16 @@ function index(req, res) {
 
 
 function show(req, res) {
-    const id = parseInt(req.params.id);
+    const slug = req.params.slug;
     const sql = `
             SELECT doctors.*, AVG(vote) AS avg_vote 
             FROM doctors
             LEFT JOIN reviews
             ON doctors.id = reviews.doctor_id 
-            WHERE doctors.id = ?
+            WHERE doctors.slug = ?
             GROUP BY doctors.id`
 
-    connection.query(sql, [id], (err, results) => {
+    connection.query(sql, [slug], (err, results) => {
         if (err) return res.status(500).json({ message: err.message });
         if (results.length === 0)
             return res.status(404).json({
@@ -76,14 +76,13 @@ function show(req, res) {
         const doctor = results[0]
         doctor.avg_vote = parseInt(doctor.avg_vote)
 
-
         const sql = `SELECT reviews.*
                     FROM reviews
                     join doctors
                     on doctors.id = reviews.doctor_id
-                    WHERE doctors.id = ?`;
+                    WHERE doctors.slug = ?`;
 
-        connection.query(sql, [id], (err, results) => {
+        connection.query(sql, [slug], (err, results) => {
             if (err) return res.status(500).json({ message: err.message })
 
             doctor.reviews = results
@@ -95,9 +94,9 @@ function show(req, res) {
 
 function storeReview(req, res) {
     const dataObj = req.body;
-    const doctor_id = req.params.id;
+    const doctor_slug = req.params.slug;
+    const doctor_id = parseInt(doctor_slug.split('-').pop())
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    console.log(dataObj, doctor_id);
 
     const { first_name, last_name, email, review, vote } = dataObj;
 
@@ -162,6 +161,9 @@ function storeDoctor(req, res) {
             if (err) {
                 return res.status(500).json(err);
             }
+            const createdID = results.insertId;
+            const slug = `${first_name}-${last_name}-${createdID}`.toLowerCase().replace(/\s+/g, "_")
+            connection.query(`UPDATE doctors SET slug='${slug}' WHERE id=${createdID}`)
             console.log(results);
             res.status(201).json({
                 message: 'Dottore inserito con successo',
@@ -169,6 +171,7 @@ function storeDoctor(req, res) {
             });
         }
     );
+
 }
 
 module.exports = { index, show, storeReview, storeDoctor };
