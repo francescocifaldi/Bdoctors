@@ -5,11 +5,13 @@ import DoctorCard from '../components/DoctorCard';
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useSearchParams } from 'react-router';
+import { useNavigate } from 'react-router';
 
 export default function SearchPage() {
     const [doctors, setDoctors] = useState([]);
     const [searchParams] = useSearchParams();
     const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
 
     const query = searchParams.get('spec');
 
@@ -36,9 +38,14 @@ export default function SearchPage() {
             });
     }
 
+    function resetSearch(){
+        setSearchQuery('')
+        navigate(`/doctor/search`)
+    }
+
     useEffect(() => {
         fetchDoctors();
-    }, []);
+    }, [query]);
 
     return (
         <>
@@ -62,6 +69,14 @@ export default function SearchPage() {
                             Invia
                         </Button>
                     </Form>
+                    <Button
+                            className="w-25"
+                            type="submit"
+                            variant="primary"
+                            onClick={() => resetSearch()}
+                        >
+                            Azzera filtri
+                        </Button>
                 </Col>
             </Row>
 
