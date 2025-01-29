@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import DoctorCard from '../components/DoctorCard';
-import { Link } from 'react-router';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import GlobalContext from '../../contexts/globalContext';
 import axios from 'axios';
-import { useNavigate } from 'react-router';
 
 export default function HomePage() {
     const [doctors, setDoctors] = useState([]);
     const [searchSpec, setSearchSpec] = useState('');
-    const { setIsLoading, isLoading } = useContext(GlobalContext);
+    const { setIsLoading } = useContext(GlobalContext);
     const navigate = useNavigate();
 
     function fetchDoctors() {
@@ -35,54 +34,15 @@ export default function HomePage() {
         fetchDoctors();
     }, []);
 
-    // useEffect(() => {
-    //     const uniqueSpecializations = [];
-    //     doctors.forEach((doctor) => {
-    //         if (!uniqueSpecializations.includes(doctor.spec)) {
-    //             uniqueSpecializations.push(doctor.spec);
-    //         }
-    //     });
-    //     setSpecialization(uniqueSpecializations);
-
-    //     setFilteredDoctors(doctors);
-    // }, [doctors]);
-
-    // function handleChange(e) {
-    //     const { value } = e.target;
-    //     console.log('change:', value);
-
-    //     if (value === 'None') {
-    //         setFilteredDoctors(doctors);
-    //     } else {
-    //         setFilteredDoctors(
-    //             doctors.filter((doctor) => doctor.spec === value)
-    //         );
-    //     }
-    // }
-
-    // console.log(filteredDoctors);
-    // console.log(doctors);
-    // console.log(specialization);
-
-    function searchDoctors(e) {
+    function handleSearch(e) {
         e.preventDefault();
-        console.log(searchSpec);
-        navigate(`/doctor/search?spec=${searchSpec}`);
+        navigate('/doctor/search', { state: { initialSpec: searchSpec } });
     }
 
     return (
         <section className="container">
-            {/* <label htmlFor="specialization">Filter by specialization</label>
-            <select onChange={handleChange} id="specialization">
-                <option value={'None'}>None</option>
-                {specialization.map((spec, i) => (
-                    <option key={i} value={spec}>
-                        {spec}
-                    </option>
-                ))}
-            </select> */}
             <Row className="mb-3">
-                <Form onSubmit={searchDoctors}>
+                <Form onSubmit={handleSearch}>
                     <Row lg={4}>
                         <Col>
                             <Form.Control
@@ -104,7 +64,7 @@ export default function HomePage() {
                 {doctors.map((doctor) => (
                     <Col key={doctor.id}>
                         <Link to={`/doctor/${doctor.id}`}>
-                            <DoctorCard doctor={doctor}></DoctorCard>
+                            <DoctorCard doctor={doctor} />
                         </Link>
                     </Col>
                 ))}
