@@ -1,80 +1,195 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
-import DoctorCard from '../components/DoctorCard';
-import { Row, Col, Button, Form } from 'react-bootstrap';
-import GlobalContext from '../../contexts/globalContext';
-import axios from 'axios';
+import React, { useContext, useEffect, useState } from "react";
+import DoctorCard from "../components/DoctorCard";
+import { Link } from "react-router";
+import { Row, Col, Button, Form } from "react-bootstrap";
+import GlobalContext from "../../contexts/globalContext";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import { NavLink } from "react-router";
 
 export default function HomePage() {
-    const [doctors, setDoctors] = useState([]);
-    const [searchSpec, setSearchSpec] = useState('');
-    const { setIsLoading } = useContext(GlobalContext);
-    const navigate = useNavigate();
+  const [doctors, setDoctors] = useState([]);
+  const [searchSpec, setSearchSpec] = useState("");
+  const { setIsLoading, isLoading } = useContext(GlobalContext);
+  const navigate = useNavigate();
 
-    function fetchDoctors() {
-        setIsLoading(true);
-        axios
-            .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`, {
+  function fetchDoctors() {
+    setIsLoading(true);
+    axios
+      .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`, {
+        params: {
+          home: true,
+        },
+      })
+      .then((res) => {
+        setDoctors(res.data.doctors);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
 
-            })
-            .then((res) => {
-                setDoctors(res.data.doctors);
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    }
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
 
-    const limitDoctors = doctors.slice(0, 5);
+  // useEffect(() => {
+  //     const uniqueSpecializations = [];
+  //     doctors.forEach((doctor) => {
+  //         if (!uniqueSpecializations.includes(doctor.spec)) {
+  //             uniqueSpecializations.push(doctor.spec);
+  //         }
+  //     });
+  //     setSpecialization(uniqueSpecializations);
 
-    useEffect(() => {
-        fetchDoctors();
-    }, []);
+  //     setFilteredDoctors(doctors);
+  // }, [doctors]);
 
-    function handleSearch(e) {
-        e.preventDefault();
-        navigate('/doctor/search', { state: { initialSpec: searchSpec } });
-    }
+  // function handleChange(e) {
+  //     const { value } = e.target;
+  //     console.log('change:', value);
 
-    return (
-        <section className="container">
-            <Row className="mb-3">
-                <Form onSubmit={handleSearch}>
-                    <Row lg={4}>
-                        <Col>
-                            <Form.Control
-                                as="select"
-                                value={searchSpec}
-                                onChange={(e) => setSearchSpec(e.target.value)}
-                            >
-                                <option value="">Seleziona Specializzazione</option>
-                                {doctors.map((doctor) => (
-                                    <option key={doctor.id} value={doctor.spec}>
-                                        {doctor.spec}
-                                    </option>
-                                ))}
-                            </Form.Control>
-                        </Col>
-                        <Col>
-                            <Button variant="primary" type="submit">
-                                Cerca
-                            </Button>
-                        </Col>
-                    </Row>
-                </Form>
-            </Row>
-            <Row className="row-gap-3" xl={5} lg={4} md={3} xs={1} sm={2}>
-                {limitDoctors.map((doctor) => (
-                    <Col key={doctor.id}>
-                        <Link to={`/doctor/${doctor.id}`}>
-                            <DoctorCard doctor={doctor} />
-                        </Link>
-                    </Col>
+  //     if (value === 'None') {
+  //         setFilteredDoctors(doctors);
+  //     } else {
+  //         setFilteredDoctors(
+  //             doctors.filter((doctor) => doctor.spec === value)
+  //         );
+  //     }
+  // }
+
+  // console.log(filteredDoctors);
+  // console.log(doctors);
+  // console.log(specialization);
+
+  function searchDoctors(e) {
+    e.preventDefault();
+    console.log(searchSpec);
+    navigate(`/doctor/search?spec=${searchSpec}`);
+  }
+
+  return (
+    <section>
+      <div style={{ position: "relative", paddingBottom: "50px" }}>
+        <img
+          className="backgroundHomePage bgImage d-none d-md-block"
+          src="./background.jpg"
+          alt=""
+        />
+        <div className="bgCaption d-none d-md-block">
+          <h2 className="bgText" style={{ marginBottom: "20px" }}>
+            Il tuo dottore a portata di un Click!
+          </h2>
+          <h3 className="bgText " style={{ lineHeight: "2" }}>
+            Filtra le tue ricerche per specializzazioni.
+          </h3>
+          <h3 className="bgText " style={{ lineHeight: "2" }}>
+            Osserva i profili, Leggi le recensioni <br />e scegli il meglio per
+            te!
+          </h3>
+        </div>
+      </div>
+      {/* <label htmlFor="specialization">Filter by specialization</label>
+            <select onChange={handleChange} id="specialization">
+                <option value={'None'}>None</option>
+                {specialization.map((spec, i) => (
+                    <option key={i} value={spec}>
+                        {spec}
+                    </option>
                 ))}
+            </select> */}
+      <div className="container-fluid container">
+        <h4 className="text-light text-center">I nostri medici in evidenza</h4>
+        <Row className="mb-3">
+          <Form onSubmit={searchDoctors}>
+            <Row lg={4}>
+              <Col>
+                <Form.Control
+                  type="text"
+                  placeholder="Cerca specializzazione"
+                  value={searchSpec}
+                  onChange={(e) => setSearchSpec(e.target.value)}
+                />
+              </Col>
+              <Col>
+                <Button variant="primary" type="submit">
+                  Cerca
+                </Button>
+              </Col>
             </Row>
-        </section>
-    );
+          </Form>
+        </Row>
+
+        <Row className="row-gap-3" xl={5} lg={4} md={3} xs={1} sm={2}>
+          {doctors.map((doctor) => (
+            <Col
+              key={doctor.id}
+              className="d-flex flex-column align-items-center"
+            >
+              <Link to={`/doctor/${doctor.id}`}>
+                <DoctorCard doctor={doctor}></DoctorCard>
+              </Link>
+            </Col>
+          ))}
+        </Row>
+        <div className="d-flex flex-column-reverse flex-md-row justify-content-between align-items-center my-5">
+          <div
+            className="text-light doctorCaption"
+            style={{ color: "#0f3439" }}
+          >
+            <h3 className="">Sei un Medico?</h3>
+            <h5 className="" style={{ fontSize: "1.2rem" }}>
+              Iscriviti e raggiungi nuovi pazienti.
+            </h5>
+            <p className="" style={{ fontSize: "1.2rem" }}>
+              Più di 1 milione di pazienti <br /> cercano ogni mese il loro
+              Medico su BDoctors <br /> il primo sito in italia per visitatori
+            </p>
+            <p className="" style={{ fontSize: "1.2rem" }}>
+              Unisciti alla nostra comunità di medici e raggiungi un pubblico
+              vasto e interessato. Con BDoctors, puoi:
+            </p>
+            <ul>
+              <li>Creare un profilo professionale e personalizzato</li>
+              <li>Presentare le tue competenze e i tuoi servizi</li>
+              <li>
+                Aumentare la tua visibilità online e raggiungere nuovi pazienti
+              </li>
+            </ul>
+            <p style={{ fontSize: "1.2rem" }}>
+              Non perdere l'opportunità di crescere la tua attività e di aiutare
+              più persone. Iscriviti ora e scopri come BDoctors può aiutarti a
+              raggiungere i tuoi obiettivi.
+            </p>
+            <h5>Vantaggi di iscriversi a BDoctors:</h5>
+            <ul>
+              <li>Aumento della visibilità online</li>
+              <li>Maggiore accesso a nuovi pazienti</li>
+              <li>
+                Possibilità di creare un profilo professionale personalizzato
+              </li>
+              <li>
+                Opportunità di essere trovato da pazienti che cercano un medico
+                specializzato come te
+              </li>
+            </ul>
+            <Button
+              variant="primary"
+              as={NavLink}
+              to="/doctor/register"
+              className="mt-3"
+            >
+              Iscriviti
+            </Button>
+          </div>
+          <div className="d-none d-md-block">
+            <img src="./doctorCaption.png" alt="" className="img-fluid" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
