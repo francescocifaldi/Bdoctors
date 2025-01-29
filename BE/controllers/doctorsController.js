@@ -8,36 +8,42 @@ function index(req, res) {
     const params = [];
     const conditions = [];
 
-    // Handle specialization search
+    // Filtro per specializzazione
     if (req.query.searchSpec) {
         conditions.push(`spec LIKE ?`);
         params.push(`%${req.query.searchSpec}%`);
     }
 
-    // Handle name search
+    // Filtro per nome
     if (req.query.searchName) {
         conditions.push(`doctors.first_name LIKE ?`);
         params.push(`%${req.query.searchName}%`);
     }
 
-    // Handle lastname search
+    // Filtro per cognome
     if (req.query.searchLastName) {
         conditions.push(`doctors.last_name LIKE ?`);
         params.push(`%${req.query.searchLastName}%`);
     }
 
-    // Combine all conditions
+    // Unisci le condizioni
     if (conditions.length > 0) {
         sql += ` WHERE ${conditions.join(' AND ')}`;
     }
 
-    // Group by and order
-    sql += ` GROUP BY doctors.id ORDER BY avg_vote DESC`;
 
-    // Check for home parameter and add limit
-    if (req.query.home === 'true') {
-        sql += ` LIMIT 5`;
+    // Aggiungi il raggruppamento per ogni dottore
+    sql += ` GROUP BY doctors.id`;
+
+    // Aggiungi il filtro per voto medio (usando HAVING)
+    if (req.query.vote) {
+        sql += ` HAVING avg_vote >= ?`;
+        params.push(req.query.vote);
     }
+
+    // Ordina per voto medio
+    sql += ` ORDER BY avg_vote DESC`;
+
 
     connection.query(sql, params, (err, doctors) => {
         if (err) {

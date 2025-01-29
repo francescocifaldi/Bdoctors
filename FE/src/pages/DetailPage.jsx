@@ -8,7 +8,8 @@ import { faStar as faStarSolid } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import { useContext } from 'react';
 import GlobalContext from '../../contexts/globalContext';
-
+import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
 export default function DetailPage() {
     const { setIsLoading, isLoading } = useContext(GlobalContext);
     const [doctor, setDoctor] = useState(null);
@@ -46,10 +47,20 @@ export default function DetailPage() {
         }
     }
 
+    const navigate = useNavigate();
+
     return (
         doctor && (
             <section className="container">
                 <div className="doctor-info">
+                    <Button
+                        className="w-50"
+                        variant="secondary"
+                        onClick={() => navigate(-1)}
+                        type="button"
+                    >
+                        Torna indietro
+                    </Button>
                     <div className="doctor-card">
                         <figure>
                             <img
