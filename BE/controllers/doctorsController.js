@@ -6,34 +6,38 @@ function index(req, res) {
             LEFT JOIN reviews ON doctors.id = reviews.doctor_id`;
 
     const params = [];
+    const conditions = [];
 
-
-    if (req.query.spec) {
-        sql += ` WHERE spec LIKE ?`;
-        params.push(`%${req.query.spec}%`);
+    // Handle specialization search
+    if (req.query.searchSpec) {
+        conditions.push(`spec LIKE ?`);
+        params.push(`%${req.query.searchSpec}%`);
     }
 
-
-    if (req.query.search) {
-        if (params.length > 0) {
-            sql += ` AND (doctors.first_name LIKE ? OR doctors.last_name LIKE ? OR doctors.spec LIKE ? OR doctors.address LIKE ? OR doctors.email LIKE ? OR doctors.phone LIKE ?)`;
-        } else {
-            sql += ` WHERE (doctors.first_name LIKE ? OR doctors.last_name LIKE ? OR doctors.spec LIKE ? OR doctors.address LIKE ? OR doctors.email LIKE ? OR doctors.phone LIKE ?)`;
-        }
-        const searchValue = `%${req.query.search}%`
-        params.push(searchValue, searchValue, searchValue, searchValue, searchValue, searchValue);
-
+    // Handle name search
+    if (req.query.searchName) {
+        conditions.push(`doctors.first_name LIKE ?`);
+        params.push(`%${req.query.searchName}%`);
     }
 
+    // Handle lastname search
+    if (req.query.searchLastName) {
+        conditions.push(`doctors.last_name LIKE ?`);
+        params.push(`%${req.query.searchLastName}%`);
+    }
 
+    // Combine all conditions
+    if (conditions.length > 0) {
+        sql += ` WHERE ${conditions.join(' AND ')}`;
+    }
+
+    // Group by and order
     sql += ` GROUP BY doctors.id ORDER BY avg_vote DESC`;
 
-
-    if (req.query.home) {
+    // Check for home parameter and add limit
+    if (req.query.home === 'true') {
         sql += ` LIMIT 5`;
     }
-
-
 
     connection.query(sql, params, (err, doctors) => {
         if (err) {
