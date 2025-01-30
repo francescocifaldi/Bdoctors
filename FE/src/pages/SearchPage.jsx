@@ -88,7 +88,7 @@ export default function SearchPage() {
 
   return (
     <>
-      <div className="container">
+      <div className="container animate">
         <Row>
           <Col>
             <Form className="d-flex gap-5 filterBar " onSubmit={handleSubmit}>
