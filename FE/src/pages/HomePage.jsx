@@ -9,18 +9,16 @@ import { NavLink } from "react-router";
 
 export default function HomePage() {
   const [doctors, setDoctors] = useState([]);
-  const [searchSpec, setSearchSpec] = useState("");
-  const { setIsLoading, isLoading } = useContext(GlobalContext);
+  const [specializations, setSpecializations] = useState([]);
+  const [searchSpec, setSearchSpec] = useState('');
+  const { setIsLoading } = useContext(GlobalContext);
   const navigate = useNavigate();
 
-  function fetchDoctors() {
+  // Fetch doctors
+  const fetchDoctors = () => {
     setIsLoading(true);
     axios
-      .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`, {
-        params: {
-          home: true,
-        },
-      })
+      .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`)
       .then((res) => {
         setDoctors(res.data.doctors);
       })
@@ -30,46 +28,37 @@ export default function HomePage() {
       .finally(() => {
         setIsLoading(false);
       });
-  }
+  };
 
   useEffect(() => {
     fetchDoctors();
   }, []);
 
-  // useEffect(() => {
-  //     const uniqueSpecializations = [];
-  //     doctors.forEach((doctor) => {
-  //         if (!uniqueSpecializations.includes(doctor.spec)) {
-  //             uniqueSpecializations.push(doctor.spec);
-  //         }
-  //     });
-  //     setSpecialization(uniqueSpecializations);
+  // Update specializations list dynamically after doctors are fetched
 
-  //     setFilteredDoctors(doctors);
-  // }, [doctors]);
+  useEffect(() => {
+    const uniqueSpecializations = [];
+    doctors.forEach((doctor) => {
+      if (!uniqueSpecializations.includes(doctor.spec)) {
+        uniqueSpecializations.push(doctor.spec);
+      }
+    });
+    setSpecializations(uniqueSpecializations);
+  }, [doctors]);
 
-  // function handleChange(e) {
-  //     const { value } = e.target;
-  //     console.log('change:', value);
-
-  //     if (value === 'None') {
-  //         setFilteredDoctors(doctors);
-  //     } else {
-  //         setFilteredDoctors(
-  //             doctors.filter((doctor) => doctor.spec === value)
-  //         );
-  //     }
-  // }
-
-  // console.log(filteredDoctors);
-  // console.log(doctors);
-  // console.log(specialization);
-
-  function searchDoctors(e) {
+  // Handle search form submission
+  const handleSearch = (e) => {
     e.preventDefault();
-    console.log(searchSpec);
-    navigate(`/doctor/search?spec=${searchSpec}`);
-  }
+    const cleanSpec = searchSpec.replace(/\s+/g, '-');
+    // Invia la specializzazione così come è, con gli spazi
+    navigate(`/doctor/search?spec=${cleanSpec}`);
+
+  };
+
+  const limitDoctors = doctors.slice(0, 5);
+
+
+
 
   return (
     <section>
@@ -92,27 +81,25 @@ export default function HomePage() {
           </h3>
         </div>
       </div>
-      {/* <label htmlFor="specialization">Filter by specialization</label>
-            <select onChange={handleChange} id="specialization">
-                <option value={'None'}>None</option>
-                {specialization.map((spec, i) => (
-                    <option key={i} value={spec}>
-                        {spec}
-                    </option>
-                ))}
-            </select> */}
+
       <div className="container-fluid container">
         <h4 className="text-light text-center">I nostri medici in evidenza</h4>
         <Row className="mb-3">
-          <Form onSubmit={searchDoctors}>
+          <Form onSubmit={handleSearch}>
             <Row lg={4}>
               <Col>
                 <Form.Control
-                  type="text"
-                  placeholder="Cerca specializzazione"
+                  as="select"
                   value={searchSpec}
                   onChange={(e) => setSearchSpec(e.target.value)}
-                />
+                >
+                  <option value="">Seleziona Specializzazione</option>
+                  {specializations.map((spec, index) => (
+                    <option key={index} value={spec}>
+                      {spec}
+                    </option>
+                  ))}
+                </Form.Control>
               </Col>
               <Col>
                 <Button variant="primary" type="submit">
@@ -124,7 +111,7 @@ export default function HomePage() {
         </Row>
 
         <Row className="row-gap-3" xl={5} lg={4} md={3} xs={1} sm={2}>
-          {doctors.map((doctor) => (
+          {limitDoctors.map((doctor) => (
             <Col
               key={doctor.id}
               className="d-flex flex-column align-items-center"

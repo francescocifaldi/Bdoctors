@@ -7,20 +7,20 @@ import { useNavigate } from 'react-router';
 
 export default function SearchPage() {
     const location = useLocation();
+    const navigate = useNavigate();
     const [doctors, setDoctors] = useState([]);
     const [searchSpec, setSearchSpec] = useState('');
     const [searchName, setSearchName] = useState('');
     const [searchLastName, setSearchLastName] = useState('');
     const [vote, setVote] = useState('');
 
+    // Fetch doctors based on filters in URL
     const fetchDoctors = (params = {}) => {
         axios
             .get(`${import.meta.env.VITE_ENV_URI}/api/doctors/search`, {
                 params,
             })
             .then((response) => {
-                console.log(response.data.doctors);
-
                 setDoctors(response.data.doctors);
             })
             .catch((err) => {
@@ -28,29 +28,41 @@ export default function SearchPage() {
             });
     };
 
+    // Read parameters from URL
     useEffect(() => {
-        const initialSpec = location.state?.initialSpec || '';
-        setSearchSpec(initialSpec);
+        const params = new URLSearchParams(location.search);
+        let spec = params.get('spec') || '';
+        const name = params.get('first_name') || '';
+        const lastName = params.get('last_name') || '';
+        const vote = params.get('vote') || '';
 
-        if (initialSpec) {
-            fetchDoctors({ searchSpec: initialSpec });
-        } else fetchDoctors()
-
-    }, []);
-
-    const handleSubmit = (e) => {
-        if (e) {
-            e.preventDefault();
+        // Sostituire i trattini con gli spazi per il parametro 'spec'
+        if (spec) {
+            spec = spec.replace(/-/g, ' '); // sostituisce i trattini con spazi
         }
 
-        const params = {
-            searchSpec,
-            searchName,
-            searchLastName,
-            vote
-        };
+        setSearchSpec(spec);
+        setSearchName(name);
+        setSearchLastName(lastName);
+        setVote(vote);
 
-        fetchDoctors(params);
+        // Recupera i medici in base ai parametri
+        fetchDoctors({ searchSpec: spec, searchName: name, searchLastName: lastName, vote: vote });
+    }, [location.search]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const params = new URLSearchParams();
+
+        // Sostituiamo gli spazi con trattini per la specializzazione
+        if (searchSpec) params.set('spec', searchSpec.replace(/\s+/g, '-'));
+
+        if (searchName) params.set('first_name', searchName);
+        if (searchLastName) params.set('last_name', searchLastName);
+        if (vote) params.set('vote', vote);
+
+        // Naviga con i parametri aggiornati nella query string
+        navigate(`/doctor/search?${params.toString()}`);
     };
 
     const resetSearch = () => {
@@ -59,41 +71,45 @@ export default function SearchPage() {
         setSearchLastName('');
         setVote('');
         fetchDoctors();
+        navigate('/doctor/search');
     };
 
-    const navigate = useNavigate();
+    const specializations = [];
+    doctors.forEach((doctor) => {
+        if (!specializations.includes(doctor.spec)) {
+            specializations.push(doctor.spec);
+        }
+    });
 
     return (
         <>
             <Row>
                 <Col md={4}>
-                    <Form
-                        className="d-flex flex-column gap-2 mb-3"
-                        onSubmit={handleSubmit}
-                    >
+                    <Form className="d-flex flex-column gap-2 mb-3" onSubmit={handleSubmit}>
+
                         <Form.Control
                             as="select"
                             value={searchSpec}
                             onChange={(e) => setSearchSpec(e.target.value)}
                         >
                             <option value="">Seleziona Specializzazione</option>
-                            {doctors.map((doctor) => (
-                                <option key={doctor.id} value={doctor.spec}>
-                                    {doctor.spec}
+                            {specializations.map((spec, index) => (
+                                <option key={index} value={spec}>
+                                    {spec}
                                 </option>
                             ))}
                         </Form.Control>
                         <Form.Control
                             as="select"
                             value={vote}
-                            onChange={(e) => setVote(e.target.value)} // Settiamo il voto medio selezionato
+                            onChange={(e) => setVote(e.target.value)}
                         >
-                            <option value="">Filtra per Voto Medio</option>
-                            <option value="5">5</option>
-                            <option value="4">4</option>
-                            <option value="3">3</option>
-                            <option value="2">2</option>
+                            <option value="">Voto Minimo</option>
                             <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </Form.Control>
                         <Form.Control
                             type="text"
@@ -108,11 +124,7 @@ export default function SearchPage() {
                             onChange={(e) => setSearchLastName(e.target.value)}
                         />
                         <div className="d-flex gap-2">
-                            <Button
-                                className="w-50"
-                                type="submit"
-                                variant="primary"
-                            >
+                            <Button className="w-50" type="submit" variant="primary">
                                 Invia
                             </Button>
                             <Button
@@ -124,16 +136,14 @@ export default function SearchPage() {
                                 Azzera filtri
                             </Button>
                         </div>
-
                     </Form>
-
                 </Col>
             </Row>
 
             <Row className="row-gap-3 mb-5">
                 {doctors.map((doctor) => (
                     <Col lg={3} md={6} key={doctor.id}>
-                        <Link to={`/doctor/${doctor.id}`}>
+                        <Link to={`/doctor/${doctor.slug}`}>
                             <DoctorCard doctor={doctor} />
                         </Link>
                     </Col>
