@@ -36,7 +36,9 @@ ul {
 }
 
 
-
+.animate-load {
+    animation: load 1s ease-in-out;
+  }
 
 .doctor-card img {
     width: 120px;
@@ -146,7 +148,24 @@ span svg {
 
 
 /* HomePage */
+.animate {
+    animation: load 0.8s ease-in-out;
+  }
+
+
+
+@keyframes load {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 .backgroundHomePage{
+    animation: load 0s ease-in-out;
     width: 100%;
    scale: 1/1;
     height: 500px;
@@ -225,3 +244,24 @@ span svg {
 .cardD:not(:hover) {
     transition: all 0.3s ease-in-out;
 }
+
+
+/* SearchPage */
+
+.filterBar{
+    border: 1px solid white;
+    background-color: white;
+    padding: 20px;
+    border-radius: 50px;
+    margin-bottom:50px ;
+}
+.searchSelect:hover{
+    border-radius: 50px;
+    background-color: rgb(231, 231, 231);
+    transition: all 0.3s ease-in-out;
+}
+.searchSelect:not(:hover){
+    
+    transition: all 0.3s ease-in-out;
+}
+
