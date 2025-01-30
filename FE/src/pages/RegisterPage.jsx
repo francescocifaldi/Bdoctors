@@ -160,7 +160,7 @@ export default function RegisterPage() {
               <Row>
                 <Col className="d-flex justify-content-center">
                   <Button
-                    className="btn btn-primary custom-button mt-3"
+                    className="btn btn-primary mt-3"
                     variant="primary"
                     onClick={(e) => storeDoctor(e)}
                   >
