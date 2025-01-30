@@ -8,34 +8,32 @@ function index(req, res) {
     const params = [];
     const conditions = [];
 
-    // Filtro per specializzazione
-    if (req.query.searchSpec) {
+    if (req.query.searchSpec && req.query.searchSpec.trim()) {
         conditions.push(`spec LIKE ?`);
-        params.push(`%${req.query.searchSpec}%`);
+        params.push(`%${req.query.searchSpec.trim()}%`);
     }
 
-    // Filtro per nome
-    if (req.query.searchName) {
+    // Filtro per nome (solo se presente)
+    if (req.query.searchName && req.query.searchName.trim()) {
         conditions.push(`doctors.first_name LIKE ?`);
-        params.push(`%${req.query.searchName}%`);
+        params.push(`%${req.query.searchName.trim()}%`);
     }
 
-    // Filtro per cognome
-    if (req.query.searchLastName) {
+    // Filtro per cognome (solo se presente)
+    if (req.query.searchLastName && req.query.searchLastName.trim()) {
         conditions.push(`doctors.last_name LIKE ?`);
-        params.push(`%${req.query.searchLastName}%`);
+        params.push(`%${req.query.searchLastName.trim()}%`);
     }
 
-    // Unisci le condizioni
+    // Se ci sono condizioni, aggiungiamo la clausola WHERE
     if (conditions.length > 0) {
         sql += ` WHERE ${conditions.join(' AND ')}`;
     }
 
-
-    // Aggiungi il raggruppamento per ogni dottore
+    // Raggruppamento per ogni dottore
     sql += ` GROUP BY doctors.id`;
 
-    // Aggiungi il filtro per voto medio (usando HAVING)
+    // Filtro per voto medio (se specificato)
     if (req.query.vote) {
         sql += ` HAVING avg_vote >= ?`;
         params.push(req.query.vote);
@@ -44,7 +42,7 @@ function index(req, res) {
     // Ordina per voto medio
     sql += ` ORDER BY avg_vote DESC`;
 
-
+    // Esegui la query
     connection.query(sql, params, (err, doctors) => {
         if (err) {
             console.error("Errore SQL:", err);

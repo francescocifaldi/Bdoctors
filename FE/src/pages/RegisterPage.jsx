@@ -46,7 +46,7 @@ export default function RegisterPage() {
         }
         console.log('form valid:', isFormVAlid, 'isRegistered:', isRegistered);
         axios
-            .post(`${import.meta.env.VITE_ENV_URI}/api/doctors`, formData)
+            .post(`${import.meta.env.VITE_ENV_URI}/api/doctors/register`, formData)
             .then((res) => {
                 console.log(res);
                 setFormData(initialFormData);
