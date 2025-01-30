@@ -10,7 +10,7 @@ import { NavLink } from "react-router";
 export default function HomePage() {
   const [doctors, setDoctors] = useState([]);
   const [specializations, setSpecializations] = useState([]);
-  const [searchSpec, setSearchSpec] = useState('');
+  const [searchSpec, setSearchSpec] = useState("");
   const { setIsLoading } = useContext(GlobalContext);
   const navigate = useNavigate();
 
@@ -49,22 +49,18 @@ export default function HomePage() {
   // Handle search form submission
   const handleSearch = (e) => {
     e.preventDefault();
-    const cleanSpec = searchSpec.replace(/\s+/g, '-');
+    const cleanSpec = searchSpec.replace(/\s+/g, "-");
     // Invia la specializzazione così come è, con gli spazi
     navigate(`/doctor/search?spec=${cleanSpec}`);
-
   };
 
   const limitDoctors = doctors.slice(0, 5);
 
-
-
-
   return (
-    <section>
+    <section className="animate">
       <div style={{ position: "relative", paddingBottom: "50px" }}>
         <img
-          className="backgroundHomePage bgImage d-none d-md-block"
+          className="backgroundHomePage bgImage d-none d-md-block animate-load"
           src="./background.jpg"
           alt=""
         />
