@@ -11,7 +11,7 @@ export default function DefaultLayout() {
   return (
     <>
       <Header />
-      <main className="p-4" style={{ minHeight: "80vh", height: "100%" }}>
+      <main className="" style={{ minHeight: "80vh", height: "100%" }}>
         <Outlet />
       </main>
       <Footer />
