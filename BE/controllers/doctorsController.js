@@ -169,10 +169,10 @@ function storeDoctor(req, res) {
             if (err) {
                 return res.status(500).json(err);
             }
-            const createdID = results.insertId;
-            const slug = `${first_name}-${last_name}-${createdID}`.toLowerCase().replace(/\s+/g, "_")
-            connection.query(`UPDATE doctors SET slug='${slug}' WHERE id=${createdID}`)
-            console.log(results);
+            // const createdID = results.insertId;
+            // const slug = `${first_name}-${last_name}-${createdID}`.toLowerCase().replace(/\s+/g, "_")
+            // connection.query(`UPDATE doctors SET slug='${slug}' WHERE id=${createdID}`)
+            // console.log(results);
             res.status(201).json({
                 message: 'Dottore inserito con successo',
                 id: results.insertId,

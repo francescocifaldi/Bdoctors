@@ -87,7 +87,7 @@ export default function DetailPage() {
                         </p>
                         {doctor.reviews.length && (
                             <p>
-                                <strong>voto:</strong>
+                                <strong>Voto: </strong>
                                 <span>
                                     {stars.map((star, i) => (
                                         <FontAwesomeIcon key={i} icon={star} />
@@ -95,6 +95,9 @@ export default function DetailPage() {
                                 </span>
                             </p>
                         )}
+                        <p>
+                            <strong>Descrizione: </strong>
+                        {doctor.description || <i>Nessuna descrizione inserita dal medico</i>}</p>
                     </div>
 
                     {doctor.reviews.length ? (
