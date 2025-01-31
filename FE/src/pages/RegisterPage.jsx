@@ -13,7 +13,9 @@ export default function RegisterPage() {
     email: "",
     phone: "",
     spec: "",
+    description: ""
   };
+  
   useEffect(() => {
     if (isRegistered || isFormVAlid === true) {
       const timer = setTimeout(() => {
@@ -157,6 +159,18 @@ export default function RegisterPage() {
                 placeholder="Specializzazione"
                 onChange={onFormChange}
               />
+
+              <Form.Label htmlFor="description">Descrizione</Form.Label>
+              <Form.Control
+                className="form-control custom-form-control"
+                type="textarea"
+                id="description"
+                name="description"
+                value={formData.description}
+                placeholder="Descrizione"
+                onChange={onFormChange}
+              />
+              
               <Row>
                 <Col className="d-flex justify-content-center">
                   <Button

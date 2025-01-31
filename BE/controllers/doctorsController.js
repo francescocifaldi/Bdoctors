@@ -140,7 +140,7 @@ function storeReview(req, res) {
 }
 
 function storeDoctor(req, res) {
-    const { first_name, last_name, address, email, phone, spec } = req.body;
+    const { first_name, last_name, address, email, phone, spec, description } = req.body;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\+?\d{9,14}$/;
 
@@ -161,10 +161,10 @@ function storeDoctor(req, res) {
     }
 
     const sql =
-        'INSERT INTO doctors (first_name, last_name, address, email, phone, spec) VALUES (?, ?, ?, ?, ?, ?)';
+        'INSERT INTO doctors (first_name, last_name, address, email, phone, spec, description) VALUES (?, ?, ?, ?, ?, ?, ?)';
     connection.query(
         sql,
-        [first_name, last_name, address, email, phone, spec],
+        [first_name, last_name, address, email, phone, spec, description],
         (err, results) => {
             if (err) {
                 return res.status(500).json(err);
