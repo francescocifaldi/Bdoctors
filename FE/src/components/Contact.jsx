@@ -5,6 +5,7 @@ export default function Contact({ slug, doctor_email }) {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState('');
+  const defaultText = "Grazie per aver contattato il medico tramite il nostro servizio, ti risponderà al più presto";
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -15,11 +16,18 @@ export default function Contact({ slug, doctor_email }) {
       to: doctor_email,
       subject: "Hello ✔",
       text: message,
-      html: `<b>${message}</b>`,
+      html: `<p>${message}</p>`,
     })
     .then(response => {
       if (response.data.success) {
         setStatus('Email inviata con successo!');
+        axios.post(`http://localhost:3000/api/doctors/${slug}/contact`, {
+            from: "bdoctors@customers.it",
+          to: email,
+          subject: "Benvenut*! ✔",
+          text: defaultText,
+          html: `<p>${defaultText}</p>`,
+        })
       } else {
         setStatus(`Errore: ${response.data.error}`);
       }
