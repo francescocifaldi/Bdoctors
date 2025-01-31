@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-export default function Contact({ slug }) {
+export default function Contact({ slug, doctor_email }) {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState('');
@@ -11,7 +11,8 @@ export default function Contact({ slug }) {
     setStatus('Invio in corso...');
 
     axios.post(`http://localhost:3000/api/doctors/${slug}/contact`, {
-      to: "bar@example.com",
+        from: email,
+      to: doctor_email,
       subject: "Hello ✔",
       text: message,
       html: `<b>${message}</b>`,

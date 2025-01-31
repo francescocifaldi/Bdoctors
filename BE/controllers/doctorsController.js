@@ -183,10 +183,10 @@ function storeDoctor(req, res) {
 
 
 function contact(req, res) {
-    const { to, subject, text, html } = req.body;
+    const { from, to, subject, text, html } = req.body;
 
     transporter.sendMail({
-        from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>',
+        from,
         to,
         subject,
         text,

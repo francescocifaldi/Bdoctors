@@ -119,7 +119,7 @@ export default function DetailPage() {
                     <h2>Aggiungi recensione</h2>
                     <FormReview slug={slug} fetchDoctor={fetchDoctor} />
                 </div>
-                <Contact slug={slug}/>
+                <Contact slug={slug} doctor_email={doctor.email}/>
             </section>
 
         )
