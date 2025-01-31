@@ -8,7 +8,7 @@ import { faStar as faStarSolid } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import { useContext } from 'react';
 import GlobalContext from '../../contexts/globalContext';
-import { Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import Contact from '../components/Contact';
 
@@ -16,6 +16,8 @@ export default function DetailPage() {
     const { setIsLoading, isLoading } = useContext(GlobalContext);
     const [doctor, setDoctor] = useState(null);
     const { slug } = useParams();
+    const [showReview, setShowReview] = useState(false);
+    const [showContact, setShowContact] = useState(false);
 
     function fetchDoctor() {
         setIsLoading(true);
@@ -85,19 +87,28 @@ export default function DetailPage() {
                         <p>
                             <strong>Specializzazione:</strong> {doctor.spec}
                         </p>
-                        {doctor.reviews.length && (
-                            <p>
-                                <strong>Voto: </strong>
-                                <span>
-                                    {stars.map((star, i) => (
-                                        <FontAwesomeIcon key={i} icon={star} />
-                                    ))}
-                                </span>
-                            </p>
-                        )}
                         <p>
                             <strong>Descrizione: </strong>
-                        {doctor.description || <i>Nessuna descrizione inserita dal medico</i>}</p>
+                            {doctor.description || <i>Nessuna descrizione inserita dal medico</i>}
+                        </p>
+                        <p>
+                            <strong>Valutazione: </strong>
+                            {
+                            doctor.reviews.length ? (
+                                <>
+                                    <span>{doctor.avg_vote}</span>
+                                    <span>
+                                        {stars.map((star, i) => (
+                                            <FontAwesomeIcon key={i} icon={star} />
+                                        ))}
+                                    </span>
+                                </>
+                            ) : (
+                                <i>Ancora nessuna valutazione</i>
+                            )
+                        }
+                        </p>
+                        
                     </div>
 
                     {doctor.reviews.length ? (
@@ -119,10 +130,47 @@ export default function DetailPage() {
                     )}
                 </div>
                 <div>
-                    <h2>Aggiungi recensione</h2>
+            {/* Bottone per aprire il Modale di Recensione */}
+            <Button variant="primary" onClick={() => setShowReview(true)}>
+                Aggiungi recensione
+            </Button>
+
+            {/* Modale per la Recensione */}
+            <Modal show={showReview} onHide={() => setShowReview(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Aggiungi recensione</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     <FormReview slug={slug} fetchDoctor={fetchDoctor} />
-                </div>
-                <Contact slug={slug} doctor_email={doctor.email}/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowReview(false)}>
+                        Chiudi
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Bottone per aprire il Modale di Contatto */}
+            <Button variant="success" onClick={() => setShowContact(true)} className="ms-2">
+                Contatta il medico
+            </Button>
+
+            {/* Modale per il Contatto */}
+            <Modal show={showContact} onHide={() => setShowContact(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Contatta il medico</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Contact slug={slug} doctor_email={doctor.email} />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowContact(false)}>
+                        Chiudi
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </div>
+
             </section>
 
         )

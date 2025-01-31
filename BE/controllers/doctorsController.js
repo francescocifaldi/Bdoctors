@@ -204,7 +204,7 @@ function contact(req, res) {
 }
 
 function uniqueSpec(req, res) {
-    const sql = `SELECT DISTINCT spec FROM doctors`;
+    const sql = `SELECT DISTINCT spec FROM doctors ORDER BY spec ASC`;
     connection.query(sql, (err, specializations) => {
         if (err) {
             console.error("Errore SQL:", err);
