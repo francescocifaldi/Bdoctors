@@ -13,6 +13,7 @@ export default function SearchPage() {
   const [searchName, setSearchName] = useState("");
   const [searchLastName, setSearchLastName] = useState("");
   const [vote, setVote] = useState("");
+  const [specializations, setSpecializations] = useState([]);
 
   // Fetch doctors based on filters in URL
   const fetchDoctors = (params = {}) => {
@@ -35,7 +36,7 @@ export default function SearchPage() {
     const name = params.get("first_name") || "";
     const lastName = params.get("last_name") || "";
     const vote = params.get("vote") || "";
-
+    fetchSpecializations()
     // Sostituire i trattini con gli spazi per il parametro 'spec'
     if (spec) {
       spec = spec.replace(/-/g, " "); // sostituisce i trattini con spazi
@@ -79,12 +80,23 @@ export default function SearchPage() {
     navigate("/doctor/search");
   };
 
-  const specializations = [];
-  doctors.forEach((doctor) => {
-    if (!specializations.includes(doctor.spec)) {
-      specializations.push(doctor.spec);
-    }
-  });
+  // const specializations = [];
+  // doctors.forEach((doctor) => {
+  //   if (!specializations.includes(doctor.spec)) {
+  //     specializations.push(doctor.spec);
+  //   }
+  // });
+
+  function fetchSpecializations() {
+    axios
+      .get(`${import.meta.env.VITE_ENV_URI}/api/doctors/spec`)
+      .then((res) => {
+        setSpecializations(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
   return (
     <>

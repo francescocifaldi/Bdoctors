@@ -203,5 +203,18 @@ function contact(req, res) {
 
 }
 
+function uniqueSpec(req, res) {
+    const sql = `SELECT DISTINCT spec FROM doctors`;
+    connection.query(sql, (err, specializations) => {
+        if (err) {
+            console.error("Errore SQL:", err);
+            return res.status(500).json({ message: err.message });
+        }
+        const specializationsArray = specializations.map(s => s.spec);
+        res.json(specializationsArray);
+        console.log(specializationsArray);
+    });
+}
 
-module.exports = { index, show, storeReview, storeDoctor, contact }
+
+module.exports = { index, show, storeReview, storeDoctor, contact, uniqueSpec }

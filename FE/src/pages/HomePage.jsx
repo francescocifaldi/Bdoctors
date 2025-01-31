@@ -14,6 +14,17 @@ export default function HomePage() {
   const { setIsLoading } = useContext(GlobalContext);
   const navigate = useNavigate();
 
+
+  function fetchSpecializations() {
+    axios
+      .get(`${import.meta.env.VITE_ENV_URI}/api/doctors/spec`)
+      .then((res) => {
+        setSpecializations(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
   // Fetch doctors
   const fetchDoctors = () => {
     setIsLoading(true);
@@ -32,19 +43,8 @@ export default function HomePage() {
 
   useEffect(() => {
     fetchDoctors();
+    fetchSpecializations()
   }, []);
-
-  // Update specializations list dynamically after doctors are fetched
-
-  useEffect(() => {
-    const uniqueSpecializations = [];
-    doctors.forEach((doctor) => {
-      if (!uniqueSpecializations.includes(doctor.spec)) {
-        uniqueSpecializations.push(doctor.spec);
-      }
-    });
-    setSpecializations(uniqueSpecializations);
-  }, [doctors]);
 
   // Handle search form submission
   const handleSearch = (e) => {
