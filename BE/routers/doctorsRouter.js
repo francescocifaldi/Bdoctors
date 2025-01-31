@@ -12,4 +12,6 @@ router.post("/:slug/review", doctorsController.storeReview);
 
 router.post("/register", doctorsController.storeDoctor);
 
+router.post("/:slug/contact", doctorsController.contact);
+
 module.exports = router;

@@ -1,35 +1,53 @@
-const nodemailer = require('nodemailer')
+import { useState } from 'react';
+import axios from 'axios';
 
-const transporter = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 587,
-    secure: false, // true for port 465, false for other ports
-    auth: {
-      user: "8b4e7f44c1b200",
-      pass: "7f14af6ad75b3a",
-    },
-  });
+export default function Contact({ slug }) {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState('');
 
-export default function Contact() {
+  const sendEmail = (e) => {
+    e.preventDefault();
+    setStatus('Invio in corso...');
 
-    async function main() {
-        // send mail with defined transport object
-        const info = await transporter.sendMail({
-          from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-          to: "bar@example.com, baz@example.com", // list of receivers
-          subject: "Hello ✔", // Subject line
-          text: "Hello world?", // plain text body
-          html: "<b>Hello world?</b>", // html body
-        });
-      
-        console.log("Message sent: %s", info.messageId);
-        // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
-      } 
-      main().catch(console.error);
-
+    axios.post(`http://localhost:3000/api/doctors/${slug}/contact`, {
+      to: "bar@example.com",
+      subject: "Hello ✔",
+      text: message,
+      html: `<b>${message}</b>`,
+    })
+    .then(response => {
+      if (response.data.success) {
+        setStatus('Email inviata con successo!');
+      } else {
+        setStatus(`Errore: ${response.data.error}`);
+      }
+    })
+    .catch(error => {
+      setStatus(`Errore: ${error.message}`);
+    });
+  };
 
   return (
-<>
-</>
-)
+    <div>
+      <h1>Contattaci</h1>
+      <form onSubmit={sendEmail}>
+        <input
+          type="email"
+          placeholder="Tua Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <textarea
+          placeholder="Il tuo messaggio"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+        />
+        <button type="submit">Invia Email</button>
+      </form>
+      <p>{status}</p>
+    </div>
+  );
 }

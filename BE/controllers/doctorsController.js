@@ -1,4 +1,14 @@
 const connection = require('../data/db');
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    host: "sandbox.smtp.mailtrap.io",
+    port: 587,
+    secure: false,
+    auth: {
+        user: "8b4e7f44c1b200",
+        pass: "7f14af6ad75b3a",
+    },
+});
 
 function index(req, res) {
     let sql = `SELECT doctors.*, AVG(vote) AS avg_vote 
@@ -169,7 +179,29 @@ function storeDoctor(req, res) {
             });
         }
     );
+}
+
+
+function contact(req, res) {
+    const { to, subject, text, html } = req.body;
+
+    transporter.sendMail({
+        from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>',
+        to,
+        subject,
+        text,
+        html,
+    })
+        .then(info => {
+            console.log("Email inviata: %s", info.messageId);
+            res.status(200).json({ success: true, messageId: info.messageId });
+        })
+        .catch(error => {
+            console.error("Errore nell'invio email:", error);
+            res.status(500).json({ success: false, error: error.message });
+        });
 
 }
 
-module.exports = { index, show, storeReview, storeDoctor };
+
+module.exports = { index, show, storeReview, storeDoctor, contact }

@@ -10,6 +10,8 @@ import { useContext } from 'react';
 import GlobalContext from '../../contexts/globalContext';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
+import Contact from '../components/Contact';
+
 export default function DetailPage() {
     const { setIsLoading, isLoading } = useContext(GlobalContext);
     const [doctor, setDoctor] = useState(null);
@@ -117,7 +119,9 @@ export default function DetailPage() {
                     <h2>Aggiungi recensione</h2>
                     <FormReview slug={slug} fetchDoctor={fetchDoctor} />
                 </div>
+                <Contact slug={slug}/>
             </section>
+
         )
     );
 }
