@@ -91,7 +91,7 @@ export default function SearchPage() {
     axios
       .get(`${import.meta.env.VITE_ENV_URI}/api/doctors/spec`)
       .then((res) => {
-        setSpecializations(res.data);
+        setSpecializations(res.data.specializations);
       })
       .catch((err) => {
         console.error(err);

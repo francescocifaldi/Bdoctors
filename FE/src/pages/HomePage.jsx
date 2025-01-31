@@ -19,7 +19,7 @@ export default function HomePage() {
     axios
       .get(`${import.meta.env.VITE_ENV_URI}/api/doctors/spec`)
       .then((res) => {
-        setSpecializations(res.data);
+        setSpecializations(res.data.specializations);
       })
       .catch((err) => {
         console.error(err);

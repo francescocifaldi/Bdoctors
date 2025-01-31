@@ -211,8 +211,7 @@ function uniqueSpec(req, res) {
             return res.status(500).json({ message: err.message });
         }
         const specializationsArray = specializations.map(s => s.spec);
-        res.json(specializationsArray);
-        console.log(specializationsArray);
+        res.json({ specializations: specializationsArray });
     });
 }
 
