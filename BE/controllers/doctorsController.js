@@ -161,9 +161,9 @@ function storeDoctor(req, res) {
     ) {
         return res.status(400).json({ message: 'Dati invalidi' });
     }
+
     const image = req.files["image"] ? req.files["image"][0].filename : null;
     const cv = req.files["cv"] ? req.files["cv"][0].filename : null;
-
 
     const sql =
         'INSERT INTO doctors (first_name, last_name, address, email, phone, spec, description, image, cv) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';

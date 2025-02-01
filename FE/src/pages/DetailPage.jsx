@@ -113,6 +113,24 @@ export default function DetailPage() {
               )}
             </p>
             <p>
+              <strong>CV: </strong>
+              {doctor.cv ? (
+                <>
+                  <iframe
+                    src={`${import.meta.env.VITE_ENV_URI}/uploads/cv/${
+                      doctor.cv
+                    }`}
+                    width="100%"
+                    height="600px"
+                    style={{ border: "none" }}
+                    title="PDF Viewer"
+                  ></iframe>
+                </>
+              ) : (
+                <i>Nessun CV caricato</i>
+              )}
+            </p>
+            <p>
               <strong>Valutazione: </strong>
               {doctor.reviews.length ? (
                 <>

@@ -187,15 +187,25 @@ export default function RegisterPage() {
                 placeholder="Descrizione"
                 onChange={onFormChange}
               />
-              <div>
-                <input
-                  type="file"
-                  onChange={(e) => setImage(e.target.files[0])}
-                />
-              </div>
-              <div>
-                <input type="file" onChange={(e) => setCV(e.target.files[0])} />
-              </div>
+              <Form.Label htmlFor="image">Immagine</Form.Label>
+              <Form.Control
+                className="form-control custom-form-control"
+                type="file"
+                accept="image/*"
+                id="image"
+                name="image"
+                onChange={(e) => setImage(e.target.files[0])}
+              />
+              <Form.Label htmlFor="image">CV</Form.Label>
+              <Form.Control
+                className="form-control custom-form-control"
+                type="file"
+                accept=".pdf"
+                id="cv"
+                name="cv"
+                onChange={(e) => setCV(e.target.files[0])}
+              />
+
               <Row>
                 <Col className="d-flex justify-content-center">
                   <Button
