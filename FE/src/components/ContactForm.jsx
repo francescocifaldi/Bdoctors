@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
+import { Form, Button, Alert } from "react-bootstrap";
 
 export default function ContactForm({ slug, doctor_email, onClose }) {
   const [email, setEmail] = useState('');
@@ -7,12 +8,31 @@ export default function ContactForm({ slug, doctor_email, onClose }) {
   const [status, setStatus] = useState('');
   const defaultText = "Grazie per aver contattato il medico tramite il nostro servizio, ti risponderà al più presto";
 
+  // Funzione per validare l'email (controlla presenza di @ e .)
+  const isValidEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return emailRegex.test(email);
+  };
+
   const sendEmail = async (e) => {
     e.preventDefault();
+
+    // Verifica se l'email è valida
+    if (!isValidEmail(email)) {
+      setStatus("Per favore, inserisci una email valida con '@' e '.'");
+      return;
+    }
+
+    // Verifica se il messaggio è vuoto
+    if (!message.trim()) {
+      setStatus("Per favore, scrivi un messaggio.");
+      return;
+    }
+
     setStatus('Invio in corso...');
 
     try {
-      // Invio email al dottore
+      // Invio dell'email al medico
       const response = await axios.post(`${import.meta.env.VITE_ENV_URI}/api/doctors/${slug}/contact`, {
         from: email,
         to: doctor_email,
@@ -46,23 +66,50 @@ export default function ContactForm({ slug, doctor_email, onClose }) {
   return (
     <div>
       <h2>Contatta il medico</h2>
-      <form onSubmit={sendEmail}>
-        <input
-          type="email"
-          placeholder="Tua Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder="Il tuo messaggio"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          required
-        />
-        <button type="submit">Invia Email</button>
-      </form>
-      {status && <p>{status}</p>}
+      <Form onSubmit={sendEmail}>
+        <Form.Group controlId="email">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Tua Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            isInvalid={status && status.includes("email")}
+
+          />
+          <Form.Control.Feedback type="invalid">
+            Per favore, inserisci una email valida con '@' e '.'.
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group controlId="message">
+          <Form.Label>Messaggio</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={4}
+            placeholder="Il tuo messaggio"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            isInvalid={status && status.includes("messaggio")}
+
+          />
+          <Form.Control.Feedback type="invalid">
+            Per favore, scrivi un messaggio.
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Invia Email
+        </Button>
+      </Form>
+
+      {/* Mostra solo il messaggio di successo dopo l'invio */}
+      {status && !status.includes("errore") && !status.includes("Invio in corso") && (
+        <Alert className="mt-3">
+          {status}
+        </Alert>
+      )}
     </div>
   );
 }
+

@@ -103,24 +103,39 @@ function show(req, res) {
 function storeReview(req, res) {
     const dataObj = req.body;
     const doctor_slug = req.params.slug;
-    const doctor_id = parseInt(doctor_slug.split('-').pop())
+    const doctor_id = parseInt(doctor_slug.split('-').pop());
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const { first_name, last_name, email, review, vote } = dataObj;
 
-    if (
-        !first_name ||
-        !last_name ||
-        !email ||
-        first_name.length < 3 ||
-        last_name.length < 3 ||
-        !emailRegex.test(email)
-    ) {
-        return res.status(400).json({ message: 'Dati invalidi' });
+    // Oggetto per gli errori
+    let errors = {};
+
+    // Validazione dei campi obbligatori
+    if (!first_name || first_name.trim().length < 3) {
+        errors.first_name = 'Il nome deve essere lungo almeno 3 caratteri';
     }
 
+    if (!last_name || last_name.trim().length < 3) {
+        errors.last_name = 'Il cognome deve essere lungo almeno 3 caratteri';
+    }
+
+    if (!email || !emailRegex.test(email)) {
+        errors.email = 'L\'email deve essere valida e contenere una "@" ed un "."';
+    }
+
+    // Se ci sono errori, restituiamo un errore
+    if (Object.keys(errors).length > 0) {
+        return res.status(400).json({ errors });
+    }
+
+    // Log della richiesta
+    console.log("Dati ricevuti:", dataObj);
+
+    // Query per inserire la recensione
     const sql = `INSERT INTO reviews (review, vote, doctor_id, first_name, last_name, email)
                 VALUES (?, ?, ${doctor_id}, ?, ?, ?)`;
+
     connection.query(
         sql,
         [
@@ -132,12 +147,14 @@ function storeReview(req, res) {
         ],
         (err, response) => {
             if (err) {
-                res.status(500).json({ message: err.message });
+                console.error("Database Error:", err.message); // Log dell'errore nel database
+                return res.status(500).json({ message: err.message });
             }
-            res.status(201).send();
+            res.status(201).send({ message: 'Recensione inviata con successo!' });
         }
     );
 }
+
 
 function storeDoctor(req, res) {
     console.log(req.file);
@@ -146,20 +163,36 @@ function storeDoctor(req, res) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\+?\d{9,14}$/;
 
-    if (
-        !first_name ||
-        !last_name ||
-        !email ||
-        !phone ||
-        !address ||
-        !spec ||
-        first_name.length < 3 ||
-        last_name.length < 3 ||
-        address.length < 5 ||
-        !emailRegex.test(email) ||
-        !phoneRegex.test(phone)
-    ) {
-        return res.status(400).json({ message: 'Dati invalidi' });
+    let errors = {};
+
+    // Verifica se i campi sono validi
+    if (!first_name || first_name.length < 3) {
+        errors.first_name = 'Il nome è obbligatorio e deve essere lungo almeno 3 caratteri';
+    }
+
+    if (!last_name || last_name.length < 3) {
+        errors.last_name = 'Il cognome è obbligatorio e deve essere lungo almeno 3 caratteri';
+    }
+
+    if (!email || !emailRegex.test(email)) {
+        errors.email = 'L\'email deve contenere una "@" ed un "."';
+    }
+
+    if (!phone || !phoneRegex.test(phone)) {
+        errors.phone = 'Il numero di telefono non è valido';
+    }
+
+    if (!address || address.length < 5) {
+        errors.address = 'L\'indirizzo è obbligatorio e deve essere lungo almeno 5 caratteri';
+    }
+
+    if (!spec) {
+        errors.spec = 'La specializzazione è obbligatoria';
+    }
+
+    // Se ci sono errori, restituisci la risposta con gli errori
+    if (Object.keys(errors).length > 0) {
+        return res.status(400).json({ errors });
     }
 
     const image = req.files["image"] ? req.files["image"][0].filename : null;
@@ -181,6 +214,7 @@ function storeDoctor(req, res) {
         }
     );
 }
+
 
 
 function contact(req, res) {
