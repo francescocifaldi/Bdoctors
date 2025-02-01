@@ -20,7 +20,6 @@ app.get("/", (req, res) => {
   res.send("ok");
 });
 
-
 app.use("/api/doctors", doctorsRouter);
 
 app.use(errorsHandler);
