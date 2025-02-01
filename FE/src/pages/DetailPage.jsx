@@ -81,7 +81,9 @@ export default function DetailPage() {
               <img
                 src={
                   doctor.image
-                    ? `${import.meta.env.VITE_ENV_URI}/img/${doctor.image}`
+                    ? `${import.meta.env.VITE_ENV_URI}/uploads/img/${
+                        doctor.image
+                      }`
                     : `${
                         import.meta.env.VITE_ENV_URI
                       }/img/doctorplaceholder.png`

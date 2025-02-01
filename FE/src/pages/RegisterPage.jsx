@@ -5,6 +5,7 @@ import axios from "axios";
 export default function RegisterPage() {
   const [isFormVAlid, setIsFormValid] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
+  const [file, setFile] = useState(null);
 
   const initialFormData = {
     first_name: "",
@@ -13,9 +14,9 @@ export default function RegisterPage() {
     email: "",
     phone: "",
     spec: "",
-    description: ""
+    description: "",
   };
-  
+
   useEffect(() => {
     if (isRegistered || isFormVAlid === true) {
       const timer = setTimeout(() => {
@@ -46,8 +47,22 @@ export default function RegisterPage() {
       setIsRegistered(true);
     }
     console.log("form valid:", isFormVAlid, "isRegistered:", isRegistered);
+    const formDataFull = new FormData();
+    Object.keys(formData).forEach((key) => {
+      formDataFull.append(key, formData[key]);
+    });
+    formDataFull.append("file", file);
+
     axios
-      .post(`${import.meta.env.VITE_ENV_URI}/api/doctors/register`, formData)
+      .post(
+        `${import.meta.env.VITE_ENV_URI}/api/doctors/register`,
+        formDataFull,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
       .then((res) => {
         console.log(res);
         setFormData(initialFormData);
@@ -170,7 +185,12 @@ export default function RegisterPage() {
                 placeholder="Descrizione"
                 onChange={onFormChange}
               />
-              
+              <div>
+                <input
+                  type="file"
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
+              </div>
               <Row>
                 <Col className="d-flex justify-content-center">
                   <Button

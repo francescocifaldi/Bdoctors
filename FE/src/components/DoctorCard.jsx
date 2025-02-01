@@ -11,7 +11,7 @@ export default function DoctorCard({ doctor }) {
             variant="top"
             src={
               image
-                ? `${import.meta.env.VITE_ENV_URI}/img/${doctor.image}`
+                ? `${import.meta.env.VITE_ENV_URI}/uploads/img/${doctor.image}`
                 : `${import.meta.env.VITE_ENV_URI}/img/doctorplaceholder.png`
             }
             alt={`${doctor.first_name} ${doctor.last_name} profile`}
