@@ -10,7 +10,7 @@ import { useContext } from 'react';
 import GlobalContext from '../../contexts/globalContext';
 import { Button, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
-import Contact from '../components/Contact';
+import ContactForm from '../components/ContactForm';
 
 export default function DetailPage() {
     const { setIsLoading, isLoading } = useContext(GlobalContext);
@@ -18,6 +18,17 @@ export default function DetailPage() {
     const { slug } = useParams();
     const [showReview, setShowReview] = useState(false);
     const [showContact, setShowContact] = useState(false);
+
+    // Funzione per chiudere il modale della review
+    const handleReviewSubmit = () => {
+        setShowReview(false);
+        fetchDoctor();
+    };
+
+    // Funzione per chiudere il modale del contact
+    const handleContactSubmit = () => {
+        setShowContact(false);
+    };
 
     function fetchDoctor() {
         setIsLoading(true);
@@ -141,13 +152,8 @@ export default function DetailPage() {
                     <Modal.Title>Aggiungi recensione</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FormReview slug={slug} fetchDoctor={fetchDoctor} />
+                    <FormReview slug={slug} fetchDoctor={fetchDoctor} onClose={handleReviewSubmit} />
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowReview(false)}>
-                        Chiudi
-                    </Button>
-                </Modal.Footer>
             </Modal>
 
             {/* Bottone per aprire il Modale di Contatto */}
@@ -161,16 +167,10 @@ export default function DetailPage() {
                     <Modal.Title>Contatta il medico</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Contact slug={slug} doctor_email={doctor.email} />
+                    <ContactForm slug={slug} doctor_email={doctor.email} onClose={handleContactSubmit} />
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowContact(false)}>
-                        Chiudi
-                    </Button>
-                </Modal.Footer>
             </Modal>
         </div>
-
             </section>
 
         )
