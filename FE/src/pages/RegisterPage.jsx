@@ -5,7 +5,8 @@ import axios from "axios";
 export default function RegisterPage() {
   const [isFormVAlid, setIsFormValid] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
-  const [file, setFile] = useState(null);
+  const [image, setImage] = useState(null);
+  const [cv, setCV] = useState(null);
 
   const initialFormData = {
     first_name: "",
@@ -51,7 +52,8 @@ export default function RegisterPage() {
     Object.keys(formData).forEach((key) => {
       formDataFull.append(key, formData[key]);
     });
-    formDataFull.append("file", file);
+    formDataFull.append("image", image);
+    formDataFull.append("cv", cv);
 
     axios
       .post(
@@ -188,8 +190,11 @@ export default function RegisterPage() {
               <div>
                 <input
                   type="file"
-                  onChange={(e) => setFile(e.target.files[0])}
+                  onChange={(e) => setImage(e.target.files[0])}
                 />
+              </div>
+              <div>
+                <input type="file" onChange={(e) => setCV(e.target.files[0])} />
               </div>
               <Row>
                 <Col className="d-flex justify-content-center">

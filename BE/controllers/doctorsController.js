@@ -161,20 +161,19 @@ function storeDoctor(req, res) {
     ) {
         return res.status(400).json({ message: 'Dati invalidi' });
     }
+    const image = req.files["image"] ? req.files["image"][0].filename : null;
+    const cv = req.files["cv"] ? req.files["cv"][0].filename : null;
+
 
     const sql =
-        'INSERT INTO doctors (first_name, last_name, address, email, phone, spec, description, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        'INSERT INTO doctors (first_name, last_name, address, email, phone, spec, description, image, cv) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     connection.query(
         sql,
-        [first_name, last_name, address, email, phone, spec, description, req.file.filename],
+        [first_name, last_name, address, email, phone, spec, description, image, cv],
         (err, results) => {
             if (err) {
                 return res.status(500).json(err);
             }
-            // const createdID = results.insertId;
-            // const slug = `${first_name}-${last_name}-${createdID}`.toLowerCase().replace(/\s+/g, "_")
-            // connection.query(`UPDATE doctors SET slug='${slug}' WHERE id=${createdID}`)
-            // console.log(results);
             res.status(201).json({
                 message: 'Dottore inserito con successo',
                 id: results.insertId,
