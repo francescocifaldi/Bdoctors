@@ -1,128 +1,160 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
+import axios from 'axios';
 
-const initialFormData = {
-    vote: 1,
-    first_name: "",
-    last_name: "",
-    email: "",
-    review: "",
-};
+const FormReview = ({ slug, fetchDoctor, onClose }) => {
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        review: '',
+        vote: 1, // Voto di default
+    });
+    const [formErrors, setFormErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-export default function FormReview({ slug, fetchDoctor, onClose }) {
-    const [formData, setFormData] = useState(initialFormData);
-    const [isFormValid, setIsFormValid] = useState(true);
-
-    function onFormChange(e) {
-        const { value, name } = e.target;
-
+    const handleChange = (e) => {
+        const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value,
         });
-    }
+    };
 
-    function storeReview(e) {
-        e.preventDefault();
-        setIsFormValid(true);
+    const validateForm = () => {
+        let errors = {};
 
-        if (
-            !formData.first_name.trim() ||
-            !formData.last_name.trim() ||
-            !formData.email.trim() ||
-            !formData.review.trim() ||
-            formData.vote < 1 ||
-            formData.vote > 5
-        ) {
-            setIsFormValid(false);
-            return;
+        // Validazione nome e cognome (minimo 3 caratteri)
+        if (!formData.first_name.trim() || formData.first_name.length < 3) {
+            errors.first_name = 'Il nome è obbligatorio e  deve essere lungo almeno 3 caratteri';
+        }
+        if (!formData.last_name.trim() || formData.last_name.length < 3) {
+            errors.last_name = 'Il cognome è obbligatorio e deve essere lungo almeno 3 caratteri';
         }
 
+        // Validazione email (deve essere un'email valida)
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email.trim() || !emailRegex.test(formData.email)) {
+            errors.email = 'L\'email è obbliogatoria e deve essere valida';
+        }
+
+        return errors;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        // Reset degli errori
+        setFormErrors({});
+
+        // Validazione
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setFormErrors(errors);
+            return; // Non inviare il form se ci sono errori
+        }
+
+        setIsSubmitting(true); // Imposta lo stato di invio
+
+        // Se il form è valido, invia la recensione
+        const reviewData = {
+            ...formData,
+            vote: parseInt(formData.vote, 10), // Assicurati che il voto sia un numero
+        };
+
+
         axios
-            .post(`${import.meta.env.VITE_ENV_URI}/api/doctors/${slug}/review`, formData)
-            .then(res => {
-                console.log(res);
-                setFormData(initialFormData);
-                fetchDoctor(); // Aggiorna il dottore dopo la recensione
-                onClose(); // Chiude il modale
+            .post(`${import.meta.env.VITE_ENV_URI}/api/doctors/${slug}/review`, reviewData)
+            .then((response) => {
+                // Se la recensione è inviata con successo
+                fetchDoctor(); // Ricarica i dettagli del medico
+                onClose(); // Chiudi il modale
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error(err);
-                setIsFormValid(false);
+                setIsSubmitting(false); // Ripristina lo stato di invio
             });
-    }
+    };
 
     return (
-        <div className='p-4'>
-            <form className='form-review' onSubmit={storeReview}>
-                <p>
-                    <label htmlFor="first_name">Nome</label>
-                    <input
-                        minLength={3}
-                        required
-                        type="text"
-                        placeholder='Scrivi il tuo nome...'
-                        name='first_name'
-                        id='first_name'
-                        value={formData.first_name}
-                        onChange={onFormChange}
-                    />
-                </p>
-                <p>
-                    <label htmlFor="last_name">Cognome</label>
-                    <input
-                        minLength={3}
-                        required
-                        type="text"
-                        placeholder='Scrivi il tuo cognome...'
-                        name='last_name'
-                        id='last_name'
-                        value={formData.last_name}
-                        onChange={onFormChange}
-                    />
-                </p>
-                <p>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        required
-                        type="email"
-                        placeholder='Scrivi la tua email...'
-                        name='email'
-                        id='email'
-                        value={formData.email}
-                        onChange={onFormChange}
-                    />
-                </p>
-                <p>
-                    <label htmlFor="review">Recensione</label>
-                    <textarea
-                        required
-                        name="review"
-                        id="review"
-                        placeholder='Scrivi la tua recensione'
-                        value={formData.review}
-                        onChange={onFormChange}
-                    ></textarea>
-                </p>
-                <p>
-                    <label htmlFor="vote">Voto</label>
-                    <select
-                        required
-                        name="vote"
-                        id="vote"
-                        value={formData.vote}
-                        onChange={onFormChange}
-                    >
-                        {[1, 2, 3, 4, 5].map(num => (
-                            <option key={num} value={num}>{num}</option>
-                        ))}
-                    </select>
-                </p>
-                <div>
-                    {!isFormValid && <strong className="text-danger">I dati non sono validi</strong>}
-                    <button type="submit">Invia</button>
-                </div>
-            </form>
-        </div>
+        <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="first_name">
+                <Form.Label>Nome</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="first_name"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                    isInvalid={!!formErrors.first_name}
+                />
+                <Form.Control.Feedback type="invalid">
+                    {formErrors.first_name}
+                </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group controlId="last_name">
+                <Form.Label>Cognome</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    isInvalid={!!formErrors.last_name}
+                />
+                <Form.Control.Feedback type="invalid">
+                    {formErrors.last_name}
+                </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    isInvalid={!!formErrors.email}
+                />
+                <Form.Control.Feedback type="invalid">
+                    {formErrors.email}
+                </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group controlId="review">
+                <Form.Label>Recensione</Form.Label>
+                <Form.Control
+                    as="textarea"
+                    name="review"
+                    value={formData.review}
+                    onChange={handleChange}
+                />
+            </Form.Group>
+
+            <Form.Group controlId="vote">
+                <Form.Label>Voto</Form.Label>
+                <Form.Control
+                    as="select"
+                    name="vote"
+                    value={formData.vote}
+                    onChange={handleChange}
+                >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </Form.Control>
+            </Form.Group>
+
+            <Button
+                variant="primary"
+                type="submit"
+                disabled={isSubmitting}
+            >
+                {isSubmitting ? 'Invio...' : 'Invia Recensione'}
+            </Button>
+        </Form>
     );
-}
+};
+
+export default FormReview;
