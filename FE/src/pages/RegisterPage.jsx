@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function RegisterPage() {
   const [isFormVAlid, setIsFormValid] = useState(false);
@@ -19,13 +20,18 @@ export default function RegisterPage() {
     description: "",
   };
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     if (isRegistered || isFormVAlid === true) {
       const timer = setTimeout(() => {
+        navigate(`/doctor/search`);
         setIsRegistered(false);
         setIsFormValid(false);
-      }, 3000);
+      }, 2000);
       return () => clearTimeout(timer);
+
+
     }
   }, [isRegistered, isFormVAlid]);
 
