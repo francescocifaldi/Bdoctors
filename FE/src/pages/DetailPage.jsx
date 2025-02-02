@@ -95,6 +95,9 @@ export default function DetailPage() {
               {doctor.first_name} {doctor.last_name}
             </h1>
             <p>
+              <strong>Città:</strong> {doctor.city}
+            </p>
+            <p>
               <strong>Indirizzo:</strong> {doctor.address}
             </p>
             <p>

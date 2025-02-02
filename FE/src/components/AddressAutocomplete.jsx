@@ -5,7 +5,7 @@ const libraries = ["places"];
 
 const AddressAutocomplete = ({ onAddressSelect }) => {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyD0Nh0Aogz2YmBRb_Md4PLlzJ6W9_KYj04", // Sostituisci con la tua API Key
+    googleMapsApiKey: `${import.meta.env.MAPS_API_KEY}`,
     libraries,
   });
 
@@ -143,6 +143,7 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
         </p>
       )}
 
+      {/*
       <div className="grid grid-cols-2 gap-4 mt-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -214,7 +215,7 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
             readOnly
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
