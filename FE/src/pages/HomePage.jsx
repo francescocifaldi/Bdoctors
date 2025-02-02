@@ -14,7 +14,6 @@ export default function HomePage() {
   const { setIsLoading } = useContext(GlobalContext);
   const navigate = useNavigate();
 
-
   function fetchSpecializations() {
     axios
       .get(`${import.meta.env.VITE_ENV_URI}/api/doctors/spec`)
@@ -25,11 +24,13 @@ export default function HomePage() {
         console.error(err);
       });
   }
-  // Fetch doctors
+
   const fetchDoctors = () => {
     setIsLoading(true);
     axios
-      .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`)
+      .get(`${import.meta.env.VITE_ENV_URI}/api/doctors`, {
+        params: { home: true },
+      })
       .then((res) => {
         setDoctors(res.data.doctors);
       })
@@ -43,7 +44,7 @@ export default function HomePage() {
 
   useEffect(() => {
     fetchDoctors();
-    fetchSpecializations()
+    fetchSpecializations();
   }, []);
 
   // Handle search form submission
@@ -53,8 +54,6 @@ export default function HomePage() {
     // Invia la specializzazione così come è, con gli spazi
     navigate(`/doctor/search?spec=${cleanSpec}`);
   };
-
-  const limitDoctors = doctors.slice(0, 5);
 
   return (
     <section className="animate">
@@ -107,7 +106,7 @@ export default function HomePage() {
         </Row>
 
         <Row className="row-gap-3" xl={5} lg={4} md={3} xs={1} sm={2}>
-          {limitDoctors.map((doctor) => (
+          {doctors.map((doctor) => (
             <Col
               key={doctor.id}
               className="d-flex flex-column align-items-center"

@@ -12,8 +12,8 @@ const transporter = nodemailer.createTransport({
 
 function index(req, res) {
     let sql = `SELECT doctors.*, AVG(vote) AS avg_vote 
-            FROM doctors
-            LEFT JOIN reviews ON doctors.id = reviews.doctor_id`;
+               FROM doctors
+               LEFT JOIN reviews ON doctors.id = reviews.doctor_id`;
 
     const params = [];
     const conditions = [];
@@ -23,36 +23,34 @@ function index(req, res) {
         params.push(`%${req.query.searchSpec.trim()}%`);
     }
 
-    // Filtro per nome (solo se presente)
     if (req.query.searchName && req.query.searchName.trim()) {
         conditions.push(`doctors.first_name LIKE ?`);
         params.push(`%${req.query.searchName.trim()}%`);
     }
 
-    // Filtro per cognome (solo se presente)
     if (req.query.searchLastName && req.query.searchLastName.trim()) {
         conditions.push(`doctors.last_name LIKE ?`);
         params.push(`%${req.query.searchLastName.trim()}%`);
     }
 
-    // Se ci sono condizioni, aggiungiamo la clausola WHERE
     if (conditions.length > 0) {
         sql += ` WHERE ${conditions.join(' AND ')}`;
     }
 
-    // Raggruppamento per ogni dottore
     sql += ` GROUP BY doctors.id`;
 
-    // Filtro per voto medio (se specificato)
     if (req.query.vote) {
         sql += ` HAVING avg_vote >= ?`;
         params.push(req.query.vote);
     }
 
-    // Ordina per voto medio
     sql += ` ORDER BY avg_vote DESC`;
 
-    // Esegui la query
+    // Se home è true, aggiungiamo il LIMIT 5
+    if (req.query.home === "true") {
+        sql += ` LIMIT 5`;
+    }
+
     connection.query(sql, params, (err, doctors) => {
         if (err) {
             console.error("Errore SQL:", err);
@@ -61,6 +59,7 @@ function index(req, res) {
         res.json({ doctors });
     });
 }
+
 
 
 function show(req, res) {
