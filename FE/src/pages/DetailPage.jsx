@@ -69,7 +69,7 @@ export default function DetailPage() {
     <section className="container">
       <div className="doctor-info">
         <Button
-          className="w-50"
+          className="w-100 mb-1"
           variant="secondary"
           onClick={() => navigate(-1)}
           type="button"

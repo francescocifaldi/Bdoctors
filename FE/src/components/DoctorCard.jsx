@@ -6,16 +6,20 @@ export default function DoctorCard({ doctor }) {
   return (
     <div className="">
       <Card className="h-100 cardD">
-        <Card.Header className="p-0">
+        <Card.Header
+          className="p-0 d-flex justify-content-center align-items-center"
+          style={{ height: "200px", backgroundColor: "#f8f9fa" }}
+        >
           <Card.Img
             variant="top"
             src={
-              image
+              doctor.image
                 ? `${import.meta.env.VITE_ENV_URI}/uploads/img/${doctor.image}`
                 : `${import.meta.env.VITE_ENV_URI}/img/doctorplaceholder.png`
             }
             alt={`${doctor.first_name} ${doctor.last_name} profile`}
             className="img-fluid"
+            style={{ height: "100%", width: "auto", objectFit: "contain" }}
           />
         </Card.Header>
         <Card.Body>
