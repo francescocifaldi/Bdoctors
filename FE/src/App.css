@@ -8,6 +8,12 @@ a {
     background-image: linear-gradient(to top, rgb(15, 23, 42), rgb(16, 185, 129), rgb(3, 105, 161));
 }
 
+ul,
+ol {
+    list-style-type: none;
+    padding: 0;
+}
+
 main {
     
     flex-grow: 1;
