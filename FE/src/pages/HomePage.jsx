@@ -78,7 +78,7 @@ export default function HomePage() {
       </div>
 
       <div className="container-fluid container">
-        <h4 className="text-light text-center">I nostri medici in evidenza</h4>
+        <h4 className="text-light text-center fs-1 mb-5">I nostri medici in evidenza</h4>
         <Row className="mb-3">
           <Form onSubmit={handleSearch}>
             <Row lg={4}>
@@ -158,18 +158,22 @@ export default function HomePage() {
                 specializzato come te
               </li>
             </ul>
-            <Button
-              variant="primary"
-              as={NavLink}
-              to="/doctor/register"
-              className="mt-3"
-            >
-              Iscriviti
-            </Button>
+
+
           </div>
           <div className="d-none d-md-block">
             <img src="./doctorCaption.png" alt="" className="img-fluid" />
           </div>
+        </div>
+        <div className="d-flex justify-content-center my-5">
+          <Button
+            variant="primary"
+            as={NavLink}
+            to="/doctor/register"
+            className="mt-3 button-register fs-4 px-5"
+          >
+            Iscriviti
+          </Button>
         </div>
       </div>
     </section>

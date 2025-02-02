@@ -9,6 +9,7 @@ import DetailPage from './pages/DetailPage';
 import RegisterPage from './pages/RegisterPage';
 import GlobalContext from '../contexts/globalContext';
 import NotFound from './components/NotFound';
+import Aboutpage from './pages/Aboutpage'
 import { useState } from 'react';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
                                 element={<RegisterPage />}
                             ></Route>
                         </Route>
+                        <Route path='/about' element={<Aboutpage />}></Route>
                         <Route path="*" element={<NotFound />}></Route>
                     </Route>
                 </Routes>
