@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "axios";
+import AddressAutocomplete from "../components/AddressAutocomplete";
 
 export default function RegisterPage() {
   const [isFormVAlid, setIsFormValid] = useState(false);
@@ -13,6 +14,7 @@ export default function RegisterPage() {
     first_name: "",
     last_name: "",
     address: "",
+    city: "",
     email: "",
     phone: "",
     spec: "",
@@ -42,11 +44,13 @@ export default function RegisterPage() {
     const errors = {};
 
     if (!formData.first_name || formData.first_name.length < 3) {
-      errors.first_name = "Il nome è obbligatorio e deve essere lungo almeno 3 caratteri";
+      errors.first_name =
+        "Il nome è obbligatorio e deve essere lungo almeno 3 caratteri";
       hasErrors = true;
     }
     if (!formData.last_name || formData.last_name.length < 3) {
-      errors.last_name = "Il cognome è obbligatorio e deve essere lungo almeno 3 caratteri";
+      errors.last_name =
+        "Il cognome è obbligatorio e deve essere lungo almeno 3 caratteri";
       hasErrors = true;
     }
     if (!formData.email) {
@@ -62,7 +66,8 @@ export default function RegisterPage() {
       hasErrors = true;
     }
     if (!formData.address || formData.address.length < 5) {
-      errors.address = "L'indirizzo è obbligatorio e deve essere lungo almeno 5 caratteri";
+      errors.address =
+        "L'indirizzo è obbligatorio e deve essere lungo almeno 5 caratteri";
       hasErrors = true;
     }
 
@@ -84,11 +89,15 @@ export default function RegisterPage() {
 
     // Invio del form al server
     axios
-      .post(`${import.meta.env.VITE_ENV_URI}/api/doctors/register`, formDataFull, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      .post(
+        `${import.meta.env.VITE_ENV_URI}/api/doctors/register`,
+        formDataFull,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
       .then((res) => {
         console.log(res);
         // Reset dei dati del form dopo successo
@@ -159,7 +168,7 @@ export default function RegisterPage() {
             </Form.Group>
           </Row>
           <Row className="mb-2">
-            <Form.Group as={Col}>
+            {/* <Form.Group as={Col}>
               <Form.Label htmlFor="address">Indirizzo</Form.Label>
               <Form.Control
                 className="form-control custom-form-control"
@@ -175,7 +184,17 @@ export default function RegisterPage() {
               <Form.Control.Feedback type="invalid">
                 {formErrors.address}
               </Form.Control.Feedback>
-            </Form.Group>
+            </Form.Group> */}
+
+            {/*test*/}
+
+            <div>
+              <AddressAutocomplete
+                onAddressSelect={(addressData) =>
+                  setFormData({ ...formData, ...addressData })
+                }
+              />
+            </div>
           </Row>
           <Row className="mb-2">
             <Form.Group className="mb-2" sm={6} as={Col}>
@@ -283,9 +302,7 @@ export default function RegisterPage() {
               </div>
             )}
             {!isRegistered && isFormVAlid && (
-              <div className="alert alert-danger">
-                I dati non sono validi
-              </div>
+              <div className="alert alert-danger">I dati non sono validi</div>
             )}
           </div>
         </Form>

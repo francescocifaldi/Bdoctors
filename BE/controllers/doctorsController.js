@@ -158,7 +158,7 @@ function storeReview(req, res) {
 function storeDoctor(req, res) {
     console.log(req.file);
     console.log(req.body);
-    const { first_name, last_name, address, email, phone, spec, description } = req.body;
+    const { first_name, last_name, address, email, phone, spec, description, city, latitude, longitude } = req.body;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\+?\d{9,14}$/;
 
@@ -198,10 +198,10 @@ function storeDoctor(req, res) {
     const cv = req.files["cv"] ? req.files["cv"][0].filename : null;
 
     const sql =
-        'INSERT INTO doctors (first_name, last_name, address, email, phone, spec, description, image, cv) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        'INSERT INTO doctors (first_name, last_name, address, email, phone, spec, description, image, cv, city, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     connection.query(
         sql,
-        [first_name, last_name, address, email, phone, spec, description, image, cv],
+        [first_name, last_name, address, email, phone, spec, description, image, cv, city, latitude, longitude],
         (err, results) => {
             if (err) {
                 return res.status(500).json(err);
