@@ -2,18 +2,18 @@ import { useState } from "react";
 import axios from "axios";
 import { Form, Button, Alert } from "react-bootstrap";
 
-export default function ContactForm({ slug, doctor_email, onClose }) {
+export default function ContactForm({ slug, doctor, onClose }) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
-  const defaultText =
-    "Grazie per aver contattato il medico tramite il nostro servizio, ti risponderà al più presto";
 
   // Funzione per validare l'email (controlla presenza di @ e .)
   const isValidEmail = (email) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     return emailRegex.test(email);
   };
+
+  const defaultText = `Grazie per aver contattato ${doctor.first_name} ${doctor.last_name} tramite il nostro servizio, ti risponderà al più presto.`;
 
   const sendEmail = async (e) => {
     e.preventDefault();
@@ -38,8 +38,8 @@ export default function ContactForm({ slug, doctor_email, onClose }) {
         `${import.meta.env.VITE_ENV_URI}/api/doctors/${slug}/contact`,
         {
           from: email,
-          to: doctor_email,
-          subject: "Richiesta di contatto",
+          to: doctor.email,
+          subject: `Richiesta di contatto da ${email}`,
           text: message,
           html: `<p>${message}</p>`,
         }
@@ -111,7 +111,9 @@ export default function ContactForm({ slug, doctor_email, onClose }) {
       {status &&
         !status.includes("errore") &&
         !status.includes("Invio in corso") && (
-          <Alert className="mt-3">{status}</Alert>
+          <Alert className="mt-3" variant="success">
+            {status}
+          </Alert>
         )}
     </div>
   );

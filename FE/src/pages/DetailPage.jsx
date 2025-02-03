@@ -208,7 +208,7 @@ export default function DetailPage() {
           <Modal.Body>
             <ContactForm
               slug={slug}
-              doctor_email={doctor.email}
+              doctor={doctor}
               onClose={handleContactSubmit}
             />
           </Modal.Body>
