@@ -20,7 +20,7 @@ export default function RegisterPage() {
     description: "",
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isRegistered || isFormVAlid === true) {
@@ -30,8 +30,6 @@ export default function RegisterPage() {
         setIsFormValid(false);
       }, 2000);
       return () => clearTimeout(timer);
-
-
     }
   }, [isRegistered, isFormVAlid]);
 
@@ -48,11 +46,13 @@ export default function RegisterPage() {
     const errors = {};
 
     if (!formData.first_name || formData.first_name.length < 3) {
-      errors.first_name = "Il nome è obbligatorio e deve essere lungo almeno 3 caratteri";
+      errors.first_name =
+        "Il nome è obbligatorio e deve essere lungo almeno 3 caratteri";
       hasErrors = true;
     }
     if (!formData.last_name || formData.last_name.length < 3) {
-      errors.last_name = "Il cognome è obbligatorio e deve essere lungo almeno 3 caratteri";
+      errors.last_name =
+        "Il cognome è obbligatorio e deve essere lungo almeno 3 caratteri";
       hasErrors = true;
     }
     if (!formData.email) {
@@ -68,7 +68,8 @@ export default function RegisterPage() {
       hasErrors = true;
     }
     if (!formData.address || formData.address.length < 5) {
-      errors.address = "L'indirizzo è obbligatorio e deve essere lungo almeno 5 caratteri";
+      errors.address =
+        "L'indirizzo è obbligatorio e deve essere lungo almeno 5 caratteri";
       hasErrors = true;
     }
 
@@ -90,11 +91,15 @@ export default function RegisterPage() {
 
     // Invio del form al server
     axios
-      .post(`${import.meta.env.VITE_ENV_URI}/api/doctors/register`, formDataFull, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      .post(
+        `${import.meta.env.VITE_ENV_URI}/api/doctors/register`,
+        formDataFull,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
       .then((res) => {
         console.log(res);
         // Reset dei dati del form dopo successo
@@ -254,6 +259,7 @@ export default function RegisterPage() {
               <Form.Control
                 className="form-control custom-form-control"
                 type="file"
+                accept="image/*"
                 id="image"
                 name="image"
                 onChange={(e) => setImage(e.target.files[0])}
@@ -289,9 +295,7 @@ export default function RegisterPage() {
               </div>
             )}
             {!isRegistered && isFormVAlid && (
-              <div className="alert alert-danger">
-                I dati non sono validi
-              </div>
+              <div className="alert alert-danger">I dati non sono validi</div>
             )}
           </div>
         </Form>

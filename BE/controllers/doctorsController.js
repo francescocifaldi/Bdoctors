@@ -60,8 +60,6 @@ function index(req, res) {
     });
 }
 
-
-
 function show(req, res) {
     const slug = req.params.slug;
     const sql = `
