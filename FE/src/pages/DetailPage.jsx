@@ -176,7 +176,7 @@ export default function DetailPage() {
           </Button>
         </div>
 
-        {doctor.reviews.length && (
+        {doctor.reviews.length > 0 && (
           <div>
             <ul>
               {doctor.reviews.map((review) => (
