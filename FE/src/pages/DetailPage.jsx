@@ -125,7 +125,7 @@ export default function DetailPage() {
           </Button>
         </div>
 
-        <Row style={{ height: "600px" }}>
+        <Row>
           <Col>
             {/*<p>
               <strong>Città:</strong> {doctor.city}
@@ -155,7 +155,7 @@ export default function DetailPage() {
             {doctor.cv ? (
               <iframe
                 src={`${import.meta.env.VITE_ENV_URI}/uploads/cv/${doctor.cv}`}
-                height="80%"
+                height="700px"
                 width="100%"
                 style={{ border: "none" }}
                 title="PDF Viewer"

@@ -79,7 +79,7 @@ function show(req, res) {
             });
 
         const doctor = results[0]
-        doctor.avg_vote = parseInt(doctor.avg_vote)
+        doctor.avg_vote = parseFloat(doctor.avg_vote, 2)
 
         const sql = `SELECT reviews.*
                     FROM reviews
