@@ -11,7 +11,10 @@ export default function DefaultLayout() {
   return (
     <>
       <Header />
-      <main className="" style={{ minHeight: "80vh", height: "100%" }}>
+      <main
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "80vh", height: "100%" }}
+      >
         <Outlet />
       </main>
       <Footer />
