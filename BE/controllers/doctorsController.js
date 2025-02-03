@@ -87,7 +87,8 @@ function show(req, res) {
                     FROM reviews
                     join doctors
                     on doctors.id = reviews.doctor_id
-                    WHERE doctors.slug = ?`;
+                    WHERE doctors.slug = ?
+                    ORDER BY reviews.date DESC`;
 
         connection.query(sql, [slug], (err, results) => {
             if (err) return res.status(500).json({ message: err.message })
