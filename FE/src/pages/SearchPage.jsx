@@ -102,13 +102,17 @@ export default function SearchPage() {
     <>
       <div className="container animate">
         <Row>
-          <Col>
-            <Form className="d-flex gap-5 filterBar " onSubmit={handleSubmit}>
+          <Col xs={12} md={12} lg={12} xl={12} className="mx-auto">
+            <Form
+              className="d-flex flex-column flex-lg-row gap-4 filterBar"
+              onSubmit={handleSubmit}
+            >
+              {/* Selettore Specializzazione */}
               <Form.Control
                 as="select"
                 value={searchSpec}
                 onChange={(e) => setSearchSpec(e.target.value)}
-                className="form-select border-0 outline-0 searchSelect "
+                className="form-select border-0 outline-0 searchSelect"
                 style={{ boxShadow: "none" }}
               >
                 <option value="">Seleziona Specializzazione</option>
@@ -118,6 +122,8 @@ export default function SearchPage() {
                   </option>
                 ))}
               </Form.Control>
+
+              {/* Selettore Voto */}
               <Form.Control
                 as="select"
                 value={vote}
@@ -132,12 +138,16 @@ export default function SearchPage() {
                 <option value="4">4</option>
                 <option value="5">5</option>
               </Form.Control>
+
+              {/* Campo di ricerca per nome */}
               <Form.Control
                 type="text"
                 placeholder="Cerca Nome"
                 value={searchName}
                 onChange={(e) => setSearchName(e.target.value)}
               />
+
+              {/* Campo di ricerca per cognome */}
               <Form.Control
                 type="text"
                 placeholder="Cerca Cognome"
@@ -145,16 +155,18 @@ export default function SearchPage() {
                 onChange={(e) => setSearchLastName(e.target.value)}
                 className="form-control"
               />
-              <div className="d-flex gap-2">
+
+              {/* Pulsanti per invio e reset */}
+              <div className="d-flex gap-2 flex-column flex-lg-row">
                 <Button
-                  className="w-50 btn btn-primary SearchBtn"
+                  className="w-100 w-lg-50 btn btn-primary SearchBtn"
                   type="submit"
                   variant="primary"
                 >
                   Invia
                 </Button>
                 <Button
-                  className="w-50 btn btn-secondary SearchBtn"
+                  className="w-100 w-lg-50 btn btn-secondary SearchBtn"
                   variant="secondary"
                   onClick={resetSearch}
                   type="button"
