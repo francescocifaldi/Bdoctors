@@ -76,7 +76,7 @@ export default function DetailPage() {
         Torna indietro
       </Button>
       <div className="doctor-info">
-        <div className="container d-flex justify-content-center flex-column align-items-center py-5">
+        <div className="container d-flex justify-content-center flex-column align-items-center pb-5">
           <h1>
             {doctor.first_name} {doctor.last_name}
           </h1>
