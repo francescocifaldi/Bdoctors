@@ -48,7 +48,7 @@ function index(req, res) {
 
     // Se home è true, aggiungiamo il LIMIT 5
     if (req.query.home === "true") {
-        sql += ` LIMIT 5`;
+        sql += ` LIMIT 4`;
     }
 
     connection.query(sql, params, (err, doctors) => {
