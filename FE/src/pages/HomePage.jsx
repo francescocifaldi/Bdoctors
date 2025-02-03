@@ -76,31 +76,29 @@ export default function HomePage() {
       </div>
 
       <div className="container-fluid container">
-        <Row className="mb-3">
-          <Form className="d-flex gap-5 filterBar" onSubmit={handleSearch}>
-            <Form.Control
-              as="select"
-              value={searchSpec}
-              onChange={(e) => setSearchSpec(e.target.value)}
-              className="form-select border-0 outline-0 searchSelect"
-              style={{ boxShadow: "none" }}
-            >
-              <option value="">Seleziona Specializzazione</option>
-              {specializations.map((spec, index) => (
-                <option key={index} value={spec}>
-                  {spec}
-                </option>
-              ))}
-            </Form.Control>
-            <Button
-              className="w-50 btn btn-primary SearchBtn"
-              type="submit"
-              variant="primary"
-            >
-              Invia
-            </Button>
-          </Form>
-        </Row>
+        <Form className="d-flex gap-5 filterBar" onSubmit={handleSearch}>
+          <Form.Control
+            as="select"
+            value={searchSpec}
+            onChange={(e) => setSearchSpec(e.target.value)}
+            className="form-select border-0 outline-0 searchSelect"
+            style={{ boxShadow: "none" }}
+          >
+            <option value="">Seleziona Specializzazione</option>
+            {specializations.map((spec, index) => (
+              <option key={index} value={spec}>
+                {spec}
+              </option>
+            ))}
+          </Form.Control>
+          <Button
+            className="w-50 btn btn-primary SearchBtn"
+            type="submit"
+            variant="primary"
+          >
+            Invia
+          </Button>
+        </Form>
 
         <h4 className="text-light text-center fs-1 mb-5">
           I nostri medici in evidenza
