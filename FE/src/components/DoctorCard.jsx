@@ -5,7 +5,7 @@ export default function DoctorCard({ doctor }) {
 
   return (
     <div className="">
-      <Card className="h-100 cardD">
+      <Card className="h-100 cardD d-flex">
         <Card.Header
           className="p-0 d-flex justify-content-center align-items-center"
           style={{ height: "200px", backgroundColor: "#f8f9fa" }}

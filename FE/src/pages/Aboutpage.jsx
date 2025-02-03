@@ -1,44 +1,82 @@
 // Doctors.js
-import React from 'react';
+import React from "react";
+import { Container, Row, Col, Card } from "react-bootstrap";
 
-
-const Doctors = () => {
+const AboutPage = () => {
     return (
-        <div className="doctors-page">
-            <section className="doctors-header">
-                <h1>Il Ruolo del Dottore</h1>
-                <p>I dottori sono figure professionali fondamentali per la nostra salute e il nostro benessere. Scopri di più su cosa fanno e perché sono così importanti.</p>
-            </section>
+        <Container className="mt-5 mb-5 animate">
+            <h1 className="text-center mb-4 text-white">Chi Siamo</h1>
 
-            <section className="doctors-content">
-                <h2>Chi sono i Dottori?</h2>
-                <p>
-                    I dottori, o medici, sono professionisti della salute che si occupano della diagnosi, del trattamento e della prevenzione delle malattie.
-                    Sono esperti in medicina e hanno un ruolo cruciale nel miglioramento della qualità della vita delle persone. Ogni medico si specializza in un particolare ambito della medicina per affrontare le varie esigenze sanitarie.
-                </p>
+            <Row className="mb-4">
+                <Col md={6} className="mb-3 mb-md-0">
+                    <Card className="shadow-sm">
+                        <Card.Body>
+                            <h3>La Nostra Missione</h3>
+                            <p>
+                                Il nostro obiettivo è rendere l'assistenza sanitaria più accessibile e facile da trovare. Siamo una piattaforma che connette pazienti e dottori con il solo scopo di migliorare la salute e il benessere di chi ci sceglie. Ogni medico presente nel nostro portale è altamente qualificato e impegnato a offrire un’assistenza sanitaria di qualità.
+                            </p>
+                        </Card.Body>
+                    </Card>
+                </Col>
 
-                <h2>Le Specializzazioni Mediche</h2>
-                <p>
-                    La medicina è un campo vasto e comprende diverse specializzazioni. Alcuni dei medici più comuni includono:
-                </p>
-                <ul>
-                    <li><strong>Medico di base:</strong> Il primo punto di riferimento per la salute generale di una persona.</li>
-                    <li><strong>Cardiologi:</strong> Specializzati nel trattamento delle malattie del cuore e del sistema circolatorio.</li>
-                    <li><strong>Dermatologi:</strong> Esperti nella diagnosi e cura delle malattie della pelle.</li>
-                    <li><strong>Ortopedici:</strong> Medici che trattano problemi muscoloscheletrici, comprese le ossa, le articolazioni e i muscoli.</li>
-                    <li><strong>Pediatri:</strong> Specializzati nell'assistenza medica ai bambini.</li>
-                    <li><strong>Chirurghi:</strong> Medici che eseguono interventi chirurgici per trattare o rimuovere malattie o lesioni.</li>
-                </ul>
+                <Col md={6} className="mb-3 mb-md-0">
+                    <Card className="shadow-sm">
+                        <Card.Body>
+                            <h3>La Nostra Visione</h3>
+                            <p>
+                                Crediamo che ogni persona abbia il diritto di ricevere assistenza sanitaria tempestiva e competente. La nostra visione è quella di diventare un punto di riferimento nella ricerca e nella scelta dei professionisti medici, garantendo ai pazienti l'accesso a un’ampia gamma di specializzazioni e trattamenti, tutto in un'unica piattaforma.
+                            </p>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
 
+            <Row className="mb-4">
+                <Col>
+                    <Card className="shadow-sm">
+                        <Card.Body>
+                            <h3>Perché Scegliere Noi?</h3>
+                            <p>
+                                - **Qualità e Professionalità**: Ogni dottore che trovi sul nostro sito è stato verificato e selezionato con cura, garantendo alti standard professionali.
+                                - **Accesso Facile e Veloce**: Trova facilmente medici nelle tue vicinanze o in base alla specializzazione di cui hai bisogno.
+                                - **Piattaforma User-Friendly**: Navigare sulla nostra piattaforma è semplice e intuitivo, con la possibilità di prenotare appuntamenti in pochi clic.
+                                - **Assistenza Dedicata**: Siamo sempre a disposizione per aiutarti a scegliere il medico giusto per le tue esigenze.
+                            </p>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
 
-                <h2>La Formazione dei Dottori</h2>
-                <p>
-                    Diventare dottore è un processo lungo e impegnativo. I medici devono completare anni di studi universitari in medicina, seguiti da una formazione pratica attraverso tirocini e specializzazioni. Solo dopo aver superato esami rigorosi e aver acquisito esperienza pratica, un medico può iniziare a trattare i pazienti in modo indipendente.
-                </p>
+            <Row className="mb-4">
+                <Col>
+                    <Card className="shadow-sm">
+                        <Card.Body>
+                            <h3>I Nostri Valori</h3>
+                            <ul>
+                                <li><strong>Competenze Mediche:</strong> Selezioniamo solo medici esperti e altamente qualificati. </li>
+                                <li><strong>Integrità e Trasparenza:</strong> Lavoriamo con i migliori dottori, e ci impegniamo a offrire un servizio trasparente, con recensioni e feedback degli utenti. </li>
+                                <li><strong>Accessibilità:</strong> Vogliamo che ogni persona abbia facile accesso alle cure di cui ha bisogno. </li>
+                                <li><strong>Innovazione:</strong> Siamo sempre alla ricerca di soluzioni moderne per migliorare l’esperienza dei nostri utenti e la qualità dei servizi medici.</li>
+                            </ul>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
 
-            </section>
-        </div>
+            <Row className="mb-4">
+                <Col>
+                    <Card className="shadow-sm">
+                        <Card.Body>
+                            <h3>Il Nostro Team</h3>
+                            <p>
+                                Il nostro team è composto da esperti nel settore della salute, dello sviluppo tecnologico e della gestione dei servizi online. Collaboriamo con medici, operatori sanitari e tecnici per rendere l’esperienza del paziente la migliore possibile.
+                            </p>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 
-export default Doctors;
+export default AboutPage;

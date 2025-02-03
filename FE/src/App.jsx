@@ -10,6 +10,9 @@ import RegisterPage from './pages/RegisterPage';
 import GlobalContext from '../contexts/globalContext';
 import NotFound from './components/NotFound';
 import Aboutpage from './pages/Aboutpage'
+import ContactPage from './pages/ContactPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/TermsOfService';
 import { useState } from 'react';
 
 function App() {
@@ -33,6 +36,9 @@ function App() {
                             ></Route>
                         </Route>
                         <Route path='/about' element={<Aboutpage />}></Route>
+                        <Route path='/contact' element={<ContactPage />}></Route>
+                        <Route path='/privacy-policy' element={<PrivacyPolicyPage />}></Route>
+                        <Route path='/terms-of-service' element={<TermsOfServicePage />}></Route>
                         <Route path="*" element={<NotFound />}></Route>
                     </Route>
                 </Routes>
