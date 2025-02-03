@@ -57,21 +57,30 @@ export default function HomePage() {
 
   return (
     <section className="animate">
-      <div style={{ position: "relative", paddingBottom: "50px" }}>
-        <img
+      <div
+        style={{
+          backgroundImage: `url("./background.jpg")`,
+          backgroundSize: "cover", // Adatta l'immagine per coprire l'intero div
+          backgroundPosition: "center", // Centra l'immagine
+          //backgroundRepeat: "no-repeat", // Evita la ripetizione dell'immagine
+          width: "100vw", // 100% della larghezza della viewport
+          height: "700px", // Altezza fissa di 400px
+        }}
+        className="mb-5 d-md-block d-none bgImage"
+      >
+        {/*<img
           className="backgroundHomePage bgImage d-none d-md-block animate-load w-100"
           src="./background.jpg"
           alt="Background"
-        />
-        <div className="bgCaption d-none d-md-block">
-          <h2 className="bgText mb-4">Il tuo dottore a portata di un Click!</h2>
-          <h3 className="bgText" style={{ lineHeight: "2" }}>
-            Filtra le tue ricerche per specializzazioni.
-          </h3>
-          <h3 className="bgText" style={{ lineHeight: "2" }}>
-            Osserva i profili, Leggi le recensioni <br /> e scegli il meglio per
-            te!
-          </h3>
+        />*/}
+        <div className="d-flex container justify-content-start align-items-center h-100">
+          <div className="text-dark text-lg-light">
+            <h2>Il tuo dottore a portata di un Click!</h2>
+            <h3>Filtra le tue ricerche per specializzazioni.</h3>
+            <h3>
+              Osserva i profili, Leggi le recensioni e scegli il meglio per te!
+            </h3>
+          </div>
         </div>
       </div>
 
