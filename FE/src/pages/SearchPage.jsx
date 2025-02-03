@@ -36,7 +36,7 @@ export default function SearchPage() {
     const name = params.get("first_name") || "";
     const lastName = params.get("last_name") || "";
     const vote = params.get("vote") || "";
-    fetchSpecializations()
+    fetchSpecializations();
     // Sostituire i trattini con gli spazi per il parametro 'spec'
     if (spec) {
       spec = spec.replace(/-/g, " "); // sostituisce i trattini con spazi
@@ -178,15 +178,21 @@ export default function SearchPage() {
           </Col>
         </Row>
 
-        <Row className="row-gap-3 mb-5">
-          {doctors.map((doctor) => (
-            <Col lg={3} md={6} key={doctor.id}>
-              <Link to={`/doctor/${doctor.slug}`}>
-                <DoctorCard doctor={doctor} />
-              </Link>
-            </Col>
-          ))}
-        </Row>
+        {doctors.length === 0 ? (
+          <h1 className="text-light">
+            Nessun dottore corrisponde ai tuoi criteri di ricerca
+          </h1>
+        ) : (
+          <Row className="row-gap-3 mb-5">
+            {doctors.map((doctor) => (
+              <Col lg={3} md={6} key={doctor.id}>
+                <Link to={`/doctor/${doctor.slug}`}>
+                  <DoctorCard doctor={doctor} />
+                </Link>
+              </Col>
+            ))}
+          </Row>
+        )}
       </div>
     </>
   );
