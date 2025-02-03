@@ -9,8 +9,13 @@ export default function Header() {
     <div className="h-200">
       <Navbar className="mb-auto" data-bs-theme="dark" expand="md">
         <Container>
-          <Navbar.Brand as={NavLink} to="/" className="me-auto">
-            BDoctors
+          <Navbar.Brand
+            as={NavLink}
+            to="/"
+            className="me-auto d-flex align-items-center"
+          >
+            <img src="../public/logo_small.png" height="50px" alt="" />
+            <h1 className="m-0">BDoctors</h1>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbar-nav" />
           <Navbar.Collapse id="navbar-nav">

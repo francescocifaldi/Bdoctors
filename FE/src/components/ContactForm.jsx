@@ -41,7 +41,8 @@ export default function ContactForm({ slug, doctor, onClose }) {
           to: doctor.email,
           subject: `Richiesta di contatto da ${email}`,
           text: message,
-          html: `<p>${message}</p>`,
+          html: `<header><h1>BDoctors</h1></header>
+          <p>${message}</p>`,
         }
       );
 

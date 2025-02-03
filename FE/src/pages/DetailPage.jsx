@@ -125,7 +125,7 @@ export default function DetailPage() {
           </Button>
         </div>
 
-        <Row>
+        <Row className="flex-column flex-md-row">
           <Col>
             {/*<p>
               <strong>Città:</strong> {doctor.city}
