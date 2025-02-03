@@ -124,9 +124,9 @@ export default function DetailPage() {
               />
             </figure>
 
-            <p>
+            {/*<p>
               <strong>Città:</strong> {doctor.city}
-            </p>
+            </p> */}
             <p>
               <strong>Indirizzo:</strong> {doctor.address}
             </p>
