@@ -7,7 +7,7 @@ export default function DoctorCard({ doctor }) {
     <div className="">
       <Card className="h-100 cardD d-flex">
         <Card.Header
-          className="p-0 d-flex justify-content-center align-items-center"
+          className="p-0 d-flex"
           style={{ height: "200px", backgroundColor: "#f8f9fa" }}
         >
           <Card.Img
@@ -18,8 +18,12 @@ export default function DoctorCard({ doctor }) {
                 : `${import.meta.env.VITE_ENV_URI}/img/doctorplaceholder.png`
             }
             alt={`${doctor.first_name} ${doctor.last_name} profile`}
-            className="img-fluid"
-            style={{ height: "100%", width: "auto", objectFit: "contain" }}
+            style={{
+              objectFit: "cover",
+              objectPosition: "50% 9%",
+              minWidth: "150px",
+              aspectRatio: "1/2",
+            }}
           />
         </Card.Header>
         <Card.Body>

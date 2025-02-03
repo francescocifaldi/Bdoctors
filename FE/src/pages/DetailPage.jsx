@@ -75,7 +75,26 @@ export default function DetailPage() {
       >
         Torna indietro
       </Button>
+
       <div className="doctor-info">
+        <figure className="d-flex justify-content-center">
+          <img
+            src={
+              doctor.image
+                ? `${import.meta.env.VITE_ENV_URI}/uploads/img/${doctor.image}`
+                : `${import.meta.env.VITE_ENV_URI}/img/doctorplaceholder.png`
+            }
+            alt={`${doctor.first_name} ${doctor.last_name} profile`}
+            style={{
+              width: "200px",
+
+              objectFit: "cover",
+              objectPosition: "top",
+              aspectRatio: "1/1",
+              borderRadius: "100%",
+            }}
+          />
+        </figure>
         <div className="container d-flex justify-content-center flex-column align-items-center pb-5">
           <h1>
             {doctor.first_name} {doctor.last_name}
@@ -106,24 +125,8 @@ export default function DetailPage() {
           </Button>
         </div>
 
-        <Row>
+        <Row style={{ height: "600px" }}>
           <Col>
-            <figure>
-              <img
-                src={
-                  doctor.image
-                    ? `${import.meta.env.VITE_ENV_URI}/uploads/img/${
-                        doctor.image
-                      }`
-                    : `${
-                        import.meta.env.VITE_ENV_URI
-                      }/img/doctorplaceholder.png`
-                }
-                alt={`${doctor.first_name} ${doctor.last_name} profile`}
-                style={{ width: "100%", objectFit: "contain" }}
-              />
-            </figure>
-
             {/*<p>
               <strong>Città:</strong> {doctor.city}
             </p> */}
@@ -139,6 +142,12 @@ export default function DetailPage() {
             <p>
               <strong>Specializzazione:</strong> {doctor.spec}
             </p>
+            <p>
+              <strong>Descrizione: </strong>
+              {doctor.description || (
+                <i>Nessuna descrizione inserita dal medico</i>
+              )}
+            </p>
           </Col>
 
           <Col>
@@ -146,7 +155,7 @@ export default function DetailPage() {
             {doctor.cv ? (
               <iframe
                 src={`${import.meta.env.VITE_ENV_URI}/uploads/cv/${doctor.cv}`}
-                height="100%"
+                height="80%"
                 width="100%"
                 style={{ border: "none" }}
                 title="PDF Viewer"
@@ -156,24 +165,26 @@ export default function DetailPage() {
             )}
           </Col>
         </Row>
-        <p>
-          <strong>Descrizione: </strong>
-          {doctor.description || <i>Nessuna descrizione inserita dal medico</i>}
-        </p>
       </div>
 
       <div className="doctor-info">
-        <div className="container d-flex justify-content-between">
+        <div className="m-auto d-md-flex justify-content-between">
           {doctor.reviews.length ? (
-            <h2>Recensioni</h2>
+            <h2 className="text-center">Recensioni</h2>
           ) : (
-            <h2>Ancora nessuna recensione</h2>
+            <h2 className="text-center">Ancora nessuna recensione</h2>
           )}
 
           {/* Bottone per aprire il Modale di Recensione */}
-          <Button variant="primary" onClick={() => setShowReview(true)}>
-            Aggiungi recensione
-          </Button>
+          <div className="d-flex justify-content-center">
+            <Button
+              variant="primary"
+              className=""
+              onClick={() => setShowReview(true)}
+            >
+              Aggiungi recensione
+            </Button>
+          </div>
         </div>
 
         {doctor.reviews.length > 0 && (
