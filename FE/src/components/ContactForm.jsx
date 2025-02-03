@@ -3,10 +3,11 @@ import axios from "axios";
 import { Form, Button, Alert } from "react-bootstrap";
 
 export default function ContactForm({ slug, doctor_email, onClose }) {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [status, setStatus] = useState('');
-  const defaultText = "Grazie per aver contattato il medico tramite il nostro servizio, ti risponderà al più presto";
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("");
+  const defaultText =
+    "Grazie per aver contattato il medico tramite il nostro servizio, ti risponderà al più presto";
 
   // Funzione per validare l'email (controlla presenza di @ e .)
   const isValidEmail = (email) => {
@@ -29,29 +30,35 @@ export default function ContactForm({ slug, doctor_email, onClose }) {
       return;
     }
 
-    setStatus('Invio in corso...');
+    setStatus("Invio in corso...");
 
     try {
       // Invio dell'email al medico
-      const response = await axios.post(`${import.meta.env.VITE_ENV_URI}/api/doctors/${slug}/contact`, {
-        from: email,
-        to: doctor_email,
-        subject: "Richiesta di contatto",
-        text: message,
-        html: `<p>${message}</p>`,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_ENV_URI}/api/doctors/${slug}/contact`,
+        {
+          from: email,
+          to: doctor_email,
+          subject: "Richiesta di contatto",
+          text: message,
+          html: `<p>${message}</p>`,
+        }
+      );
 
       if (response.data.success) {
-        setStatus('Email inviata con successo!');
+        setStatus("Email inviata con successo!");
 
         // Invia email di conferma all'utente
-        await axios.post(`${import.meta.env.VITE_ENV_URI}/api/doctors/${slug}/contact`, {
-          from: "bdoctors@customers.it",
-          to: email,
-          subject: "Conferma contatto",
-          text: defaultText,
-          html: `<p>${defaultText}</p>`,
-        });
+        await axios.post(
+          `${import.meta.env.VITE_ENV_URI}/api/doctors/${slug}/contact`,
+          {
+            from: "bdoctors@customers.it",
+            to: email,
+            subject: "Conferma contatto",
+            text: defaultText,
+            html: `<p>${defaultText}</p>`,
+          }
+        );
 
         // Chiude il modale dopo l'invio
         onClose();
@@ -65,7 +72,6 @@ export default function ContactForm({ slug, doctor_email, onClose }) {
 
   return (
     <div>
-      <h2>Contatta il medico</h2>
       <Form onSubmit={sendEmail}>
         <Form.Group controlId="email">
           <Form.Label>Email</Form.Label>
@@ -75,7 +81,6 @@ export default function ContactForm({ slug, doctor_email, onClose }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             isInvalid={status && status.includes("email")}
-
           />
           <Form.Control.Feedback type="invalid">
             Per favore, inserisci una email valida con '@' e '.'.
@@ -91,25 +96,23 @@ export default function ContactForm({ slug, doctor_email, onClose }) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             isInvalid={status && status.includes("messaggio")}
-
           />
           <Form.Control.Feedback type="invalid">
             Per favore, scrivi un messaggio.
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className="mt-2">
           Invia Email
         </Button>
       </Form>
 
       {/* Mostra solo il messaggio di successo dopo l'invio */}
-      {status && !status.includes("errore") && !status.includes("Invio in corso") && (
-        <Alert className="mt-3">
-          {status}
-        </Alert>
-      )}
+      {status &&
+        !status.includes("errore") &&
+        !status.includes("Invio in corso") && (
+          <Alert className="mt-3">{status}</Alert>
+        )}
     </div>
   );
 }
-

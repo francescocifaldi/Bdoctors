@@ -78,8 +78,8 @@ export default function HomePage() {
       </div>
 
       <div className="container-fluid container">
-        <h4 className="text-light text-center fs-1 mb-5">I nostri medici in evidenza</h4>
         <Row className="mb-3">
+          {/*
           <Form onSubmit={handleSearch}>
             <Row lg={4}>
               <Col>
@@ -103,7 +103,36 @@ export default function HomePage() {
               </Col>
             </Row>
           </Form>
+          */}
+
+          <Form className="d-flex gap-5 filterBar " onSubmit={handleSearch}>
+            <Form.Control
+              as="select"
+              value={searchSpec}
+              onChange={(e) => setSearchSpec(e.target.value)}
+              className="form-select border-0 outline-0 searchSelect "
+              style={{ boxShadow: "none" }}
+            >
+              <option value="">Seleziona Specializzazione</option>
+              {specializations.map((spec, index) => (
+                <option key={index} value={spec}>
+                  {spec}
+                </option>
+              ))}
+            </Form.Control>
+            <Button
+              className="w-50 btn btn-primary SearchBtn"
+              type="submit"
+              variant="primary"
+            >
+              Invia
+            </Button>
+          </Form>
         </Row>
+
+        <h4 className="text-light text-center fs-1 mb-5">
+          I nostri medici in evidenza
+        </h4>
 
         <Row className="row-gap-3" xl={5} lg={4} md={3} xs={1} sm={2}>
           {doctors.map((doctor) => (
@@ -158,8 +187,6 @@ export default function HomePage() {
                 specializzato come te
               </li>
             </ul>
-
-
           </div>
           <div className="d-none d-md-block">
             <img src="./doctorCaption.png" alt="" className="img-fluid" />
