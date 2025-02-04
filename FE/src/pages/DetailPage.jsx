@@ -107,7 +107,7 @@ export default function DetailPage() {
                     <FontAwesomeIcon key={i} icon={star} />
                   ))}
                 </span>
-                <span>({doctor.avg_vote})</span>
+                <span>({doctor.avg_vote.toFixed(2)})</span>
                 <br />
                 <i>{`in base a ${doctor.reviews.length} recensioni`}</i>
               </>
