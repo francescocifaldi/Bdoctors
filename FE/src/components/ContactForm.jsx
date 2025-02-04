@@ -13,7 +13,7 @@ export default function ContactForm({ slug, doctor, onClose }) {
     return emailRegex.test(email);
   };
 
-  const defaultText = `Grazie per aver contattato ${doctor.first_name} ${doctor.last_name} tramite il nostro servizio, ti risponderà al più presto.`;
+  const defaultText = `Grazie per aver contattato <strong>${doctor.first_name} ${doctor.last_name}</strong> tramite il nostro servizio, ti risponderà al più presto.`;
 
   const sendEmail = async (e) => {
     e.preventDefault();
@@ -41,8 +41,14 @@ export default function ContactForm({ slug, doctor, onClose }) {
           to: doctor.email,
           subject: `Richiesta di contatto da ${email}`,
           text: message,
-          html: `<header><h1>BDoctors</h1></header>
-          <p>${message}</p>`,
+          html: `<body style="margin: 0; font-family: 'Lato', sans-serif;"><header style="background-color: #046DA0; color: white; display: flex; align-items: center; height: 80px;">
+        <h1 style="margin: 0; font-size: 24px;">BDoctors</h1>
+    </header>
+    <div style="padding: 20px;">
+    <p>Ricevuta una richiesta di contatto da <strong>${email}</strong>:</p>
+          <i style="padding: 20px">${message}</i>
+          </div>
+          </body>`,
         }
       );
 
@@ -57,7 +63,13 @@ export default function ContactForm({ slug, doctor, onClose }) {
             to: email,
             subject: "Conferma contatto",
             text: defaultText,
-            html: `<p>${defaultText}</p>`,
+            html: `<body style="margin: 0; font-family: 'Lato', sans-serif;"><header style="background-color: #046DA0; color: white; display: flex; align-items: center; height: 80px;">
+        <h1 style="margin: 0; font-size: 24px;">BDoctors</h1>
+    </header>
+    <div style="padding: 20px;">
+          <p>${defaultText}</p>
+          </div>
+          </body>`,
           }
         );
 
